@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-export default class NotFoundPage extends Component {
+export class NotFoundPage extends Component {
   render() {
-    return <div>404</div>;
+    return <h2>404</h2>;
   }
 }

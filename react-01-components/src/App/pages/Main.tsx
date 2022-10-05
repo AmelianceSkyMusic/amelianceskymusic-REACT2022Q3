@@ -1,11 +1,61 @@
+import './Main.css';
+import api from 'App/api';
+import { Card } from 'App/components/Card';
+import { ICard } from 'App/types/ICard';
 import React, { Component } from 'react';
+import Search from 'App/components/Search';
 
-export default class Main extends Component {
+interface IState {
+  cards: ICard[];
+  isLoaded: boolean;
+  searchValue: string;
+}
+export class Main extends Component {
+  state: IState = {
+    cards: [],
+    isLoaded: false,
+    searchValue: '',
+  };
+
+  async componentDidMount() {
+    const searchValue = localStorage.getItem('searchValue');
+    console.log('searchValue:', searchValue);
+
+    if (searchValue) this.setState({ searchValue: searchValue });
+
+    try {
+      const response = await api.google.getSheetData({
+        sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',
+      });
+      const dataArr = api.google.convertors.convertDataToArrayOfObjects(response);
+      this.setState({ cards: dataArr, isLoaded: true });
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('searchValue', this.state.searchValue);
+  }
+
+  setSearchValue(value: string) {
+    this.setState({ searchValue: value });
+  }
+
   render() {
+    const { cards, isLoaded } = this.state;
+
     return (
-      <div>
-        Main
-        <input type="search"></input>
+      <div className="main-page">
+        <h1>Main</h1>
+        <Search onChange={this.setSearchValue.bind(this)}></Search>
+        <div className="cards">
+          {isLoaded ? (
+            cards?.length > 0 && cards.map((card) => <Card key={card.id} {...card} />)
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </div>
     );
   }

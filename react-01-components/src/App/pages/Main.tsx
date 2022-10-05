@@ -38,10 +38,6 @@ export class Main extends Component {
     localStorage.setItem('searchValue', this.state.searchValue);
   }
 
-  // setSearchValue(value: string) {
-  //   this.setState({ searchValue: value });
-  // }
-
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const elem = event.target as HTMLInputElement;
     console.log(elem);

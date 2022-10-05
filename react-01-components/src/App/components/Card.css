@@ -1,0 +1,37 @@
+.card {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  /* border: 8px double magenta; */
+  padding: 16px;
+  box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255), 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
+.card__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-self: start;
+  width: 50%;
+  text-align: center;
+}
+
+.card__visual {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+
+.card__brand {
+  display: flex;
+  width: 25%;
+}
+
+.card__img {
+  display: flex;
+  width: 70%;
+  height: 100%;
+}

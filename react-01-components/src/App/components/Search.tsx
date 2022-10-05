@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 interface ISearchProps {
-  onChange: (value: string) => void;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface ISearchState {
@@ -10,13 +11,13 @@ interface ISearchState {
 
 export default class Search extends Component<ISearchProps, ISearchState> {
   state: ISearchState = {
-    value: '',
+    value: this.props.value,
   };
 
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    this.props.onChange(event);
     const elem = event.target as HTMLInputElement;
     this.setState({ value: elem.value });
-    this.props.onChange(elem.value);
   }
 
   render() {

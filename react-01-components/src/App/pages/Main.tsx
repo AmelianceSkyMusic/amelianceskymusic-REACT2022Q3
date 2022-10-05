@@ -38,17 +38,23 @@ export class Main extends Component {
     localStorage.setItem('searchValue', this.state.searchValue);
   }
 
-  setSearchValue(value: string) {
-    this.setState({ searchValue: value });
+  // setSearchValue(value: string) {
+  //   this.setState({ searchValue: value });
+  // }
+
+  handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const elem = event.target as HTMLInputElement;
+    console.log(elem);
+    this.setState({ value: elem.value });
   }
 
   render() {
-    const { cards, isLoaded } = this.state;
+    const { cards, isLoaded, searchValue } = this.state;
 
     return (
       <div className="main-page">
         <h1>Main</h1>
-        <Search onChange={this.setSearchValue.bind(this)}></Search>
+        <Search value={searchValue} onChange={this.handleSearchChange.bind(this)}></Search>
         <div className="cards">
           {isLoaded ? (
             cards?.length > 0 && cards.map((card) => <Card key={card.id} {...card} />)

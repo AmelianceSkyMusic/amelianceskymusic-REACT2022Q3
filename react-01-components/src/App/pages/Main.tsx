@@ -4,6 +4,7 @@ import { Card } from 'App/components/Card';
 import { ICard } from 'App/types/ICard';
 import React, { Component } from 'react';
 import Search from 'App/components/Search';
+import Loading from 'App/components/Loading';
 
 interface IState {
   cards: ICard[];
@@ -40,7 +41,6 @@ export class Main extends Component {
 
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const elem = event.target as HTMLInputElement;
-    console.log(elem);
     this.setState({ value: elem.value });
   }
 
@@ -55,7 +55,7 @@ export class Main extends Component {
           {isLoaded ? (
             cards?.length > 0 && cards.map((card) => <Card key={card.id} {...card} />)
           ) : (
-            <p>Loading...</p>
+            <Loading />
           )}
         </div>
       </div>

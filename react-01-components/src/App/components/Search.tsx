@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 interface ISearchProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  searchApply: () => void;
 }
 
 interface ISearchState {
@@ -24,7 +25,7 @@ export class Search extends Component<ISearchProps, ISearchState> {
     const { value } = this.state;
     return (
       <div className="search">
-        <button>Search</button>
+        <button onClick={() => this.props.searchApply()}>Search</button>
         <input
           type="search"
           value={value}

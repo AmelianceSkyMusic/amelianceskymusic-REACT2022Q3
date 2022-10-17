@@ -18,15 +18,11 @@ export class Main extends Component {
     initCards: [],
     cards: [],
     isLoaded: false,
-    searchValue: '',
+    searchValue: localStorage.getItem('searchValue') || '',
     error: null,
   };
 
   async componentDidMount() {
-    const searchValue = localStorage.getItem('searchValue');
-
-    if (searchValue) this.setState({ searchValue: searchValue });
-
     try {
       const response = await api.google.getSheetData({
         sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',

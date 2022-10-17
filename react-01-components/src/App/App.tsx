@@ -6,7 +6,7 @@ import { About } from './pages/About';
 import { Main } from './pages/Main';
 import { NotFoundPage } from './pages/NotFoundPage';
 
-export default class App extends Component {
+export class App extends Component {
   render() {
     return (
       <div className="app">

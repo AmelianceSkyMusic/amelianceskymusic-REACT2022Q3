@@ -9,7 +9,7 @@ interface ISearchState {
   value: string;
 }
 
-export default class Search extends Component<ISearchProps, ISearchState> {
+export class Search extends Component<ISearchProps, ISearchState> {
   state: ISearchState = {
     value: this.props.value,
   };

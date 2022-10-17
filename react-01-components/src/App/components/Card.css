@@ -1,5 +1,5 @@
 .card {
-  width: 50%;
+  width: 25%;
   display: flex;
   justify-content: space-between;
   /* border: 8px double magenta; */
@@ -32,6 +32,6 @@
 
 .card__img {
   display: flex;
-  width: 70%;
-  height: 100%;
+  width: 120%;
+  height: 80%;
 }

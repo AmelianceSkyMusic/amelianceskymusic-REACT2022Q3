@@ -1,9 +1,6 @@
 import './Layout.css';
 import React, { Component } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-
-const setActive = ({ isActive }: { isActive: boolean }) => (isActive ? 'active' : '');
-
 export class Layout extends Component {
   render() {
     return (

@@ -4,12 +4,12 @@ import { ICard } from 'App/types/ICard';
 
 export class Card extends Component<ICard> {
   render() {
-    const { balance, brand, color, name, popular, price, size, year, image } = this.props;
+    const { brand, color, name, popular, price, size, year, image } = this.props;
 
     return (
       <div className="card">
         <div className="card__visual">
-          <img className="card__brand" src={`assets/svg/${brand}.svg`} alt={image || 'brand'} />
+          <img className="card__brand" src={`assets/svg/${brand}.svg`} alt={brand || 'brand'} />
           <img className="card__img" src={`assets/img/${image}.png`} alt={image || 'img'} />
         </div>
         <div className="card__info">

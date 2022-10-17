@@ -1,0 +1,314 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card component Card Snapshot 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="card"
+      >
+        <div
+          class="card__visual"
+        >
+          <img
+            alt="nike"
+            class="card__brand"
+            src="assets/svg/nike.svg"
+          />
+          <img
+            alt="Nike Air Force 1 '07"
+            class="card__img"
+            src="assets/img/Nike Air Force 1 '07.png"
+          />
+        </div>
+        <div
+          class="card__info"
+        >
+          <h2>
+            Nike Air Force 1 '07
+          </h2>
+          <p>
+            COLOR: 
+            white
+          </p>
+          <p>
+            top
+          </p>
+          <p>
+            PRICE: $
+            110
+          </p>
+          <p>
+            SIZE: 
+            4567
+          </p>
+          <p>
+            2014
+          </p>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card__visual"
+        >
+          <img
+            alt="adidas"
+            class="card__brand"
+            src="assets/svg/adidas.svg"
+          />
+          <img
+            alt="DURAMO 10 SHOES"
+            class="card__img"
+            src="assets/img/DURAMO 10 SHOES.png"
+          />
+        </div>
+        <div
+          class="card__info"
+        >
+          <h2>
+            Duramo 10 Shoes
+          </h2>
+          <p>
+            COLOR: 
+            blue/white
+          </p>
+          <p />
+          <p>
+            PRICE: $
+            65
+          </p>
+          <p>
+            SIZE: 
+            56
+          </p>
+          <p>
+            2021
+          </p>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card__visual"
+        >
+          <img
+            alt="reebok"
+            class="card__brand"
+            src="assets/svg/reebok.svg"
+          />
+          <img
+            alt="Nano X1 Grit Men's Training Shoes"
+            class="card__img"
+            src="assets/img/Nano X1 Grit Men's Training Shoes.png"
+          />
+        </div>
+        <div
+          class="card__info"
+        >
+          <h2>
+            Nano X1 Grit Men'S Training Shoes
+          </h2>
+          <p>
+            COLOR: 
+            black
+          </p>
+          <p />
+          <p>
+            PRICE: $
+            135
+          </p>
+          <p>
+            SIZE: 
+            4567
+          </p>
+          <p>
+            2019
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="card"
+    >
+      <div
+        class="card__visual"
+      >
+        <img
+          alt="nike"
+          class="card__brand"
+          src="assets/svg/nike.svg"
+        />
+        <img
+          alt="Nike Air Force 1 '07"
+          class="card__img"
+          src="assets/img/Nike Air Force 1 '07.png"
+        />
+      </div>
+      <div
+        class="card__info"
+      >
+        <h2>
+          Nike Air Force 1 '07
+        </h2>
+        <p>
+          COLOR: 
+          white
+        </p>
+        <p>
+          top
+        </p>
+        <p>
+          PRICE: $
+          110
+        </p>
+        <p>
+          SIZE: 
+          4567
+        </p>
+        <p>
+          2014
+        </p>
+      </div>
+    </div>
+    <div
+      class="card"
+    >
+      <div
+        class="card__visual"
+      >
+        <img
+          alt="adidas"
+          class="card__brand"
+          src="assets/svg/adidas.svg"
+        />
+        <img
+          alt="DURAMO 10 SHOES"
+          class="card__img"
+          src="assets/img/DURAMO 10 SHOES.png"
+        />
+      </div>
+      <div
+        class="card__info"
+      >
+        <h2>
+          Duramo 10 Shoes
+        </h2>
+        <p>
+          COLOR: 
+          blue/white
+        </p>
+        <p />
+        <p>
+          PRICE: $
+          65
+        </p>
+        <p>
+          SIZE: 
+          56
+        </p>
+        <p>
+          2021
+        </p>
+      </div>
+    </div>
+    <div
+      class="card"
+    >
+      <div
+        class="card__visual"
+      >
+        <img
+          alt="reebok"
+          class="card__brand"
+          src="assets/svg/reebok.svg"
+        />
+        <img
+          alt="Nano X1 Grit Men's Training Shoes"
+          class="card__img"
+          src="assets/img/Nano X1 Grit Men's Training Shoes.png"
+        />
+      </div>
+      <div
+        class="card__info"
+      >
+        <h2>
+          Nano X1 Grit Men'S Training Shoes
+        </h2>
+        <p>
+          COLOR: 
+          black
+        </p>
+        <p />
+        <p>
+          PRICE: $
+          135
+        </p>
+        <p>
+          SIZE: 
+          4567
+        </p>
+        <p>
+          2019
+        </p>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

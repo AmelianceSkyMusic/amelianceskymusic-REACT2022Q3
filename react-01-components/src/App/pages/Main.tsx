@@ -1,26 +1,29 @@
 import './Main.css';
+import React, { Component } from 'react';
 import api from 'App/api';
 import { Card } from 'App/components/Card';
 import { ICard } from 'App/types/ICard';
-import React, { Component } from 'react';
-import Search from 'App/components/Search';
-import Loading from 'App/components/Loading';
+import { Search } from 'App/components/Search';
+import { Loading } from 'App/components/Loading';
 
 interface IState {
+  initCards: ICard[];
   cards: ICard[];
   isLoaded: boolean;
   searchValue: string;
+  error: string | null;
 }
 export class Main extends Component {
   state: IState = {
+    initCards: [],
     cards: [],
     isLoaded: false,
     searchValue: '',
+    error: null,
   };
 
   async componentDidMount() {
     const searchValue = localStorage.getItem('searchValue');
-    console.log('searchValue:', searchValue);
 
     if (searchValue) this.setState({ searchValue: searchValue });
 
@@ -29,9 +32,9 @@ export class Main extends Component {
         sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',
       });
       const dataArr = api.google.convertors.convertDataToArrayOfObjects(response);
-      this.setState({ cards: dataArr, isLoaded: true });
+      this.setState({ initCards: dataArr, cards: dataArr, isLoaded: true });
     } catch (error) {
-      console.log('error: ', error);
+      this.setState({ error: error });
     }
   }
 
@@ -41,17 +44,32 @@ export class Main extends Component {
 
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const elem = event.target as HTMLInputElement;
-    this.setState({ value: elem.value });
+    const searchValue = elem.value;
+    this.setState({ searchValue: searchValue });
+  }
+
+  handleSearchButtonApply() {
+    const tempInitCards = [...this.state.initCards];
+    const searchValue = this.state.searchValue;
+    const filteredCards = tempInitCards.filter((card) => {
+      return card.name?.toLowerCase().includes(searchValue.toLowerCase());
+    });
+    this.setState({ cards: filteredCards });
   }
 
   render() {
-    const { cards, isLoaded, searchValue } = this.state;
+    const { cards, isLoaded, searchValue, error } = this.state;
 
     return (
       <div className="main-page">
-        <h1>Main</h1>
-        <Search value={searchValue} onChange={this.handleSearchChange.bind(this)}></Search>
+        <h1 className="">Main</h1>
+        <Search
+          value={searchValue}
+          onChange={this.handleSearchChange.bind(this)}
+          searchApply={this.handleSearchButtonApply.bind(this)}
+        ></Search>
         <div className="cards">
+          {error && <p>Something went wrong!</p>}
           {isLoaded ? (
             cards?.length > 0 && cards.map((card) => <Card key={card.id} {...card} />)
           ) : (

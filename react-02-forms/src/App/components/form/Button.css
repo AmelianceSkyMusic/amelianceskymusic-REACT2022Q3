@@ -18,3 +18,7 @@ input[type="submit"]:active {
   border-radius: 0;
   background-color: greenyellow;
 }
+
+input[type="submit"]:disabled {
+  opacity: 50%;
+}

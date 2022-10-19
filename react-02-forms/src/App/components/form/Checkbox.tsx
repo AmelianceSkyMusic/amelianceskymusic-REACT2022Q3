@@ -1,3 +1,4 @@
+import './Checkbox.css';
 import React, { Component } from 'react';
 
 interface ICheckboxProps {
@@ -15,9 +16,9 @@ export class Checkbox extends Component<ICheckboxProps> {
     const { children, name } = this.props;
     const { input } = this;
     return (
-      <label>
+      <label className="checkbox">
         {children}
-        <input type="checkbox" name={name} ref={input}></input>
+        <input type="checkbox" className="checkbox__input" name={name} ref={input}></input>
       </label>
     );
   }

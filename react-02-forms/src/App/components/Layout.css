@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 16px;
 }
 .active {
   font-weight: bold;

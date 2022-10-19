@@ -59,3 +59,8 @@ input {
 label {
   cursor: pointer;
 }
+
+.input-error {
+  color: red;
+  font-weight: bold;
+}

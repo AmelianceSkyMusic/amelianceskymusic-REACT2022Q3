@@ -44,6 +44,10 @@ button:active {
   background-color: greenyellow;
 }
 
+button:disabled {
+  opacity: 50%;
+}
+
 input {
   text-align: center;
   width: 320px;

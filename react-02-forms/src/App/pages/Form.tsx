@@ -31,23 +31,11 @@ interface IFormState {
 
 export class Form extends Component<unknown, IFormState> {
   formRef: React.RefObject<HTMLFormElement>;
-  nameRef: React.RefObject<HTMLInputElement>;
-  dateRef: React.RefObject<HTMLInputElement>;
-  birthdayRef: React.RefObject<HTMLInputElement>;
-  confirmRef: React.RefObject<HTMLInputElement>;
-  sexRef: React.RefObject<HTMLInputElement>;
-  imageRef: React.RefObject<HTMLInputElement>;
   initCard: ICard;
 
   constructor(props: unknown) {
     super(props);
     this.formRef = React.createRef();
-    this.nameRef = React.createRef();
-    this.dateRef = React.createRef();
-    this.birthdayRef = React.createRef();
-    this.confirmRef = React.createRef();
-    this.sexRef = React.createRef();
-    this.imageRef = React.createRef();
     this.addCard = this.addCard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -98,8 +86,8 @@ export class Form extends Component<unknown, IFormState> {
   }
 
   resetFormHandler() {
-    console.log('reset');
     this.setState({ previewImgUrl: null });
+    this?.formRef?.current?.reset();
   }
 
   onChangeHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -109,7 +97,10 @@ export class Form extends Component<unknown, IFormState> {
     const formData = new FormData(form);
     const imageObject = formData.get('image') || null;
     const image =
-      imageObject && imageObject instanceof File ? URL.createObjectURL(imageObject) : null;
+      imageObject && imageObject instanceof File && imageObject.name
+        ? URL.createObjectURL(imageObject)
+        : null;
+
     this.setState({ previewImgUrl: image });
   }
 
@@ -147,11 +138,18 @@ export class Form extends Component<unknown, IFormState> {
 
   render() {
     const { cards, isSubmitDisabled, previewImgUrl } = this.state;
+    const { formRef } = this;
+    console.log('previewImgUrl', previewImgUrl);
 
     return (
       <div className="form-page">
         <h1 className="">Form</h1>
-        <form onSubmit={this.handleSubmit} onChange={this.onChangeHandler} className="form">
+        <form
+          onSubmit={this.handleSubmit}
+          onChange={this.onChangeHandler}
+          className="form"
+          ref={formRef}
+        >
           <Button className="form__submit" name="submitButton" isDisabled={isSubmitDisabled}>
             Create Your Beautiful Card
           </Button>

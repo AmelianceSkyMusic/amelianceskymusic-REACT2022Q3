@@ -24,6 +24,7 @@ interface ICard {
 interface IFormState {
   isSubmitDisabled: boolean;
   isFormError: boolean;
+  previewImgUrl: string | null;
   errors: { [key: string]: string | null };
   cards: ICard[];
 }
@@ -66,6 +67,7 @@ export class Form extends Component<unknown, IFormState> {
   state: IFormState = {
     isSubmitDisabled: true,
     isFormError: false,
+    previewImgUrl: null,
     errors: {
       name: null,
       date: null,
@@ -97,10 +99,18 @@ export class Form extends Component<unknown, IFormState> {
 
   resetFormHandler() {
     console.log('reset');
+    this.setState({ previewImgUrl: null });
   }
 
-  onChangeHandler() {
+  onChangeHandler(event: React.FormEvent<HTMLFormElement>) {
     this.setState({ isSubmitDisabled: false });
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const imageObject = formData.get('image') || null;
+    const image =
+      imageObject && imageObject instanceof File ? URL.createObjectURL(imageObject) : null;
+    this.setState({ previewImgUrl: image });
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -112,7 +122,7 @@ export class Form extends Component<unknown, IFormState> {
     const name = formData.get('name')?.toString() || null;
     const date = formData.get('date')?.toString() || null;
     const birthday = formData.get('birthday')?.toString() || null;
-    const goodPerson = formData.get('goodPerson')?.toString() ? 'yes' : 'no';
+    const goodPerson = formData.get('goodPerson')?.toString() || null;
     const sex = formData.get('sex')?.toString() ? 'yes' : 'no';
     const age = formData.get('age')?.toString() || null;
     const imageObject = formData.get('image') || null;
@@ -136,7 +146,7 @@ export class Form extends Component<unknown, IFormState> {
   }
 
   render() {
-    const { cards, isSubmitDisabled } = this.state;
+    const { cards, isSubmitDisabled, previewImgUrl } = this.state;
 
     return (
       <div className="form-page">
@@ -697,6 +707,9 @@ export class Form extends Component<unknown, IFormState> {
           <FileUpload name="image" accept=".jpg, .jpeg, .png">
             Upload Your Avatarka
           </FileUpload>
+          {previewImgUrl && (
+            <img className="form__img-preview" src={previewImgUrl} alt={previewImgUrl} />
+          )}
         </form>
         <button onClick={this.resetFormHandler}>Reset Current Form</button>
         <>

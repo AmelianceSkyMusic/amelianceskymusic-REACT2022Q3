@@ -23,7 +23,6 @@ interface ICard {
 
 interface IFormState {
   isSubmitDisabled: boolean;
-  isFormError: boolean;
   previewImgUrl: string | null;
   errors: { [key: string]: string | null };
   cards: ICard[];
@@ -33,9 +32,27 @@ export class Form extends Component<unknown, IFormState> {
   formRef: React.RefObject<HTMLFormElement>;
   initCard: ICard;
 
+  state: IFormState = {
+    isSubmitDisabled: true,
+    previewImgUrl: null,
+    errors: {
+      name: null,
+      date: null,
+      birthday: null,
+      goodPerson: null,
+      sex: null,
+      age: null,
+      image: null,
+    },
+    cards: [],
+  };
+
   constructor(props: unknown) {
     super(props);
     this.formRef = React.createRef();
+    this.getFieldsDataFromForm = this.getFieldsDataFromForm.bind(this);
+
+    this.validation = this.validation.bind(this);
     this.addCard = this.addCard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -52,21 +69,100 @@ export class Form extends Component<unknown, IFormState> {
     };
   }
 
-  state: IFormState = {
-    isSubmitDisabled: true,
-    isFormError: false,
-    previewImgUrl: null,
-    errors: {
-      name: null,
-      date: null,
-      birthday: null,
-      goodPerson: null,
-      sex: null,
-      age: null,
-      image: null,
-    },
-    cards: [],
-  };
+  getFieldsDataFromForm(): ICard {
+    const form = this?.formRef?.current as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const name = formData.get('name')?.toString() || null;
+    const date = formData.get('date')?.toString() || null;
+    const birthday = formData.get('birthday')?.toString() || null;
+    const goodPerson = formData.get('goodPerson')?.toString() || null;
+    const sex = formData.get('sex')?.toString() || null;
+    const age = formData.get('age')?.toString() || null;
+    const imageObject = formData.get('image') || null;
+    const image =
+      imageObject && imageObject instanceof File && imageObject.name
+        ? URL.createObjectURL(imageObject)
+        : null;
+    const id = getRandomNumber(100_000_000_000, 999_999_999_999).toString();
+
+    const formFieldsData = {
+      name,
+      date,
+      birthday,
+      goodPerson,
+      sex,
+      age,
+      image,
+      id,
+    };
+    return formFieldsData;
+  }
+
+  validation(formFields: ICard) {
+    let name = null;
+    let date = null;
+    let birthday = null;
+    let goodPerson = null;
+    let sex = null;
+    let age = null;
+    let image = null;
+    let isValidated = true;
+
+    if (!formFields.name) {
+      name = '❗❗❗ ERROR: THE INPUT IS SO EMPTY! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    } else if (!formFields.name?.match(/[A-ZÀ-ÿ]/i)) {
+      name = '❗❗❗ ERROR: THE NAME IS SO INVALID! TRY AGAIN ❗❗❗';
+      isValidated = false;
+    } else if (formFields.name && formFields.name?.trim().length <= 4) {
+      name = '❗❗❗ ERROR: THE INPUT IS SO SHORTLY! TRY AGAIN ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.date) {
+      date = '❗❗❗ ERROR: THE INPUT IS SO UNDEFINED! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.birthday) {
+      birthday = '❗❗❗ ERROR: THE INPUT IS SO UNKNOWN! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.goodPerson) {
+      goodPerson = '❗❗❗ ERROR: YOU ARE NOT GOOD ENOUGH! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.sex) {
+      sex = '❗❗❗ ERROR: YOUR SEX NOT DEFINED ENOUGH! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.age) {
+      age = '❗❗❗ ERROR: YOU ARE SO NO HAVE AGE! TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    if (!formFields.image) {
+      image = '❗❗❗ ERROR: DO YOU HAVE ANY BEAUTIFUL PICTURE? TRY AGAIN! ❗❗❗';
+      isValidated = false;
+    }
+
+    this.setState({
+      errors: {
+        name,
+        date,
+        birthday,
+        goodPerson,
+        sex,
+        age,
+        image,
+      },
+    });
+    return isValidated;
+  }
 
   addCard(formFields: ICard) {
     if (
@@ -79,21 +175,28 @@ export class Form extends Component<unknown, IFormState> {
       formFields.image &&
       formFields.id
     ) {
-      this.setState({
-        cards: [...this.state.cards, formFields],
-      });
+      this.setState({ cards: [...this.state.cards, formFields] });
     }
   }
 
   resetFormHandler() {
-    this.setState({ previewImgUrl: null });
     this?.formRef?.current?.reset();
+    this.setState({
+      errors: {
+        name: null,
+        date: null,
+        birthday: null,
+        goodPerson: null,
+        sex: null,
+        age: null,
+        image: null,
+      },
+      previewImgUrl: null,
+    });
   }
 
-  onChangeHandler(event: React.FormEvent<HTMLFormElement>) {
-    this.setState({ isSubmitDisabled: false });
-
-    const form = event.currentTarget;
+  onChangeHandler() {
+    const form = this?.formRef?.current as HTMLFormElement;
     const formData = new FormData(form);
     const imageObject = formData.get('image') || null;
     const image =
@@ -101,45 +204,21 @@ export class Form extends Component<unknown, IFormState> {
         ? URL.createObjectURL(imageObject)
         : null;
 
-    this.setState({ previewImgUrl: image });
+    this.setState({ isSubmitDisabled: false, previewImgUrl: image });
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formFieldsData = this.getFieldsDataFromForm();
 
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const name = formData.get('name')?.toString() || null;
-    const date = formData.get('date')?.toString() || null;
-    const birthday = formData.get('birthday')?.toString() || null;
-    const goodPerson = formData.get('goodPerson')?.toString() || null;
-    const sex = formData.get('sex')?.toString() ? 'yes' : 'no';
-    const age = formData.get('age')?.toString() || null;
-    const imageObject = formData.get('image') || null;
-    const image =
-      imageObject && imageObject instanceof File ? URL.createObjectURL(imageObject) : null;
-    const id = getRandomNumber(100000000000, 999999999999).toString();
-
-    const formFields = {
-      name,
-      date,
-      birthday,
-      goodPerson,
-      sex,
-      age,
-      image,
-      id,
-    };
-
-    this.addCard(formFields);
-    this.resetFormHandler();
+    if (this.validation(formFieldsData)) {
+      this.addCard(formFieldsData);
+    }
   }
 
   render() {
-    const { cards, isSubmitDisabled, previewImgUrl } = this.state;
+    const { cards, isSubmitDisabled, previewImgUrl, errors } = this.state;
     const { formRef } = this;
-    console.log('previewImgUrl', previewImgUrl);
 
     return (
       <div className="form-page">
@@ -154,14 +233,17 @@ export class Form extends Component<unknown, IFormState> {
             Create Your Beautiful Card
           </Button>
 
-          <TextInput name="name" placeholder="please, type your name">
-            Your Name:
+          <TextInput name="name" placeholder="please, type your name" error={errors.name}>
+            Your Name*:
           </TextInput>
 
-          <DateInput name="date">Your Favorite Date:</DateInput>
+          <DateInput name="date" error={errors.date}>
+            Your Favorite Date*:
+          </DateInput>
 
           <Dropdown
             name="birthday"
+            title="Select day"
             options={[
               '01 April',
               '01 August',
@@ -536,13 +618,18 @@ export class Form extends Component<unknown, IFormState> {
               '31 October',
               '31 September',
             ]}
+            error={errors.birthday}
           >
-            Your Birthday:
+            Your Birthday*:
           </Dropdown>
 
-          <Checkbox name="goodPerson">I Am A Good Person:</Checkbox>
+          <Checkbox name="goodPerson" error={errors.goodPerson}>
+            I Am A Good Person*:
+          </Checkbox>
 
-          <Switcher name="sex">Male/Female</Switcher>
+          <Switcher name="sex" error={errors.sex}>
+            Male/Female*:
+          </Switcher>
 
           <RadioButtons
             name="age"
@@ -698,12 +785,13 @@ export class Form extends Component<unknown, IFormState> {
               '2',
               '1',
             ]}
+            error={errors.age}
           >
-            Your Age:
+            Your Age*:
           </RadioButtons>
 
-          <FileUpload name="image" accept=".jpg, .jpeg, .png">
-            Upload Your Avatarka
+          <FileUpload name="image" accept=".jpg, .jpeg, .png" error={errors.image}>
+            Upload Your Avatarka*:
           </FileUpload>
           {previewImgUrl && (
             <img className="form__img-preview" src={previewImgUrl} alt={previewImgUrl} />
@@ -717,8 +805,8 @@ export class Form extends Component<unknown, IFormState> {
                 <h2>Your Name: {card.name}</h2>
                 <p>Your Favorite Date: {card.date}</p>
                 <p>Your Birthday: {card.birthday}</p>
-                <p>Are You A Good Person: {card.goodPerson}</p>
-                <p>Male/Female: {card.sex}</p>
+                <p>{card.goodPerson && 'I am a good person'}</p>
+                <p>Male/Female: {card.sex ? 'yes' : 'no'}</p>
                 <p>Your Age: {card.age}</p>
                 {card.image && <img src={card.image} alt={card.image} />}
               </div>

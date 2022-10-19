@@ -51,3 +51,7 @@ input {
   box-shadow: 8px 8px aquamarine;
   border: 2px solid aquamarine;
 }
+
+label {
+  cursor: pointer;
+}

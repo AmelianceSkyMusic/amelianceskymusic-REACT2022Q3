@@ -3,6 +3,11 @@ import React, { Component } from 'react';
 interface ITextInputProps {
   children?: string;
   placeholder?: string;
+  required?: boolean;
+  pattern?: string;
+  minLength?: number;
+  maxLength?: number;
+  error?: string | null;
   name: string;
 }
 
@@ -13,13 +18,24 @@ export class TextInput extends Component<ITextInputProps> {
     this.input = React.createRef();
   }
   render() {
-    const { children, name, placeholder } = this.props;
+    const { children, name, placeholder, required, error, pattern, minLength, maxLength } =
+      this.props;
     const { input } = this;
     return (
-      <label>
+      <label className="text-input">
         {children}
-        <span>ERROR: THE INPUT IS SO EMPTY</span>
-        <input type="input" name={name} placeholder={placeholder} ref={input}></input>
+        <span className="text-input__error input-error">{error}</span>
+        <input
+          className="text-input__input"
+          type="input"
+          name={name}
+          placeholder={placeholder}
+          ref={input}
+          required={required}
+          pattern={pattern}
+          minLength={minLength}
+          maxLength={maxLength}
+        ></input>
       </label>
     );
   }

@@ -3,6 +3,7 @@ import { RadioButton } from './RadioButton';
 
 interface IRadioButtonsProps {
   children?: string;
+  error?: string | null;
   options: string[];
   name: string;
 }
@@ -12,10 +13,11 @@ export class RadioButtons extends Component<IRadioButtonsProps> {
     super(props);
   }
   render() {
-    const { children, options } = this.props;
+    const { children, error, options } = this.props;
     return (
       <div className="radio-buttons">
         {children}
+        <span className="radio-buttons__error input-error">{error}</span>
         {options.map((optionValue) => (
           <RadioButton key={optionValue} name="age">
             {optionValue}

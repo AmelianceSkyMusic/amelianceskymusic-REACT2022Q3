@@ -12,6 +12,12 @@
   position: relative;
   vertical-align: middle;
   transition: background 0.25s;
+
+  text-align: center;
+  width: 320px;
+  border-radius: 50%;
+  box-shadow: 8px 8px aquamarine;
+  border: 2px solid aquamarine;
 }
 .toggle-switch:before,
 .toggle-switch:after {
@@ -22,11 +28,11 @@
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
-  width: 24px;
+  width: 50%;
   height: 24px;
   position: absolute;
   top: 4px;
-  left: 4px;
+  left: 50%;
   transition: left 0.25s;
 }
 .toggle:hover .toggle-switch:before {

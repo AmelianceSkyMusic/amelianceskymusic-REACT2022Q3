@@ -50,13 +50,14 @@ export class Form extends Component<unknown, IFormState> {
   constructor(props: unknown) {
     super(props);
     this.formRef = React.createRef();
-    this.getFieldsDataFromForm = this.getFieldsDataFromForm.bind(this);
 
+    this.getFieldsDataFromForm = this.getFieldsDataFromForm.bind(this);
     this.validation = this.validation.bind(this);
     this.addCard = this.addCard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.resetFormHandler = this.resetFormHandler.bind(this);
+
     this.initCard = {
       name: null,
       date: null,
@@ -181,6 +182,7 @@ export class Form extends Component<unknown, IFormState> {
 
   resetFormHandler() {
     this?.formRef?.current?.reset();
+
     this.setState({
       errors: {
         name: null,
@@ -192,6 +194,7 @@ export class Form extends Component<unknown, IFormState> {
         image: null,
       },
       previewImgUrl: null,
+      isSubmitDisabled: true,
     });
   }
 
@@ -204,7 +207,11 @@ export class Form extends Component<unknown, IFormState> {
         ? URL.createObjectURL(imageObject)
         : null;
 
-    this.setState({ isSubmitDisabled: false, previewImgUrl: image });
+    if (this.state.isSubmitDisabled === true) {
+      this.setState({ isSubmitDisabled: false, previewImgUrl: image });
+    } else {
+      this.setState({ previewImgUrl: image });
+    }
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -214,6 +221,7 @@ export class Form extends Component<unknown, IFormState> {
     if (this.validation(formFieldsData)) {
       this.addCard(formFieldsData);
       this.resetFormHandler();
+      alert('Congratulations! You are good enough! Card is on page!');
     }
   }
 

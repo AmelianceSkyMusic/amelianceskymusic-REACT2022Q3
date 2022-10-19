@@ -213,6 +213,7 @@ export class Form extends Component<unknown, IFormState> {
 
     if (this.validation(formFieldsData)) {
       this.addCard(formFieldsData);
+      this.resetFormHandler();
     }
   }
 

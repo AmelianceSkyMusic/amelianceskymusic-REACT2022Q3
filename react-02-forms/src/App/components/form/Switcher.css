@@ -3,7 +3,7 @@
   display: inline-block;
 }
 
-.toggle-switch {
+.toggle__switch {
   display: inline-block;
   background: #ccc;
   border-radius: 16px;
@@ -19,11 +19,11 @@
   box-shadow: 8px 8px aquamarine;
   border: 2px solid aquamarine;
 }
-.toggle-switch:before,
-.toggle-switch:after {
+.toggle__switch:before,
+.toggle__switch:after {
   content: "";
 }
-.toggle-switch:before {
+.toggle__switch:before {
   display: block;
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
   border-radius: 50%;
@@ -35,23 +35,23 @@
   left: 50%;
   transition: left 0.25s;
 }
-.toggle:hover .toggle-switch:before {
+.toggle:hover .toggle__switch:before {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
-.toggle-checkbox:checked + .toggle-switch {
+.toggle__checkbox:checked + .toggle__switch {
   background: #56c080;
 }
-.toggle-checkbox:checked + .toggle-switch:before {
+.toggle__checkbox:checked + .toggle__switch:before {
   left: 30px;
 }
 
-.toggle-checkbox {
+.toggle__checkbox {
   position: absolute;
   visibility: hidden;
 }
 
-.toggle-label {
+.toggle__label {
   margin-left: 5px;
   position: relative;
   top: 2px;

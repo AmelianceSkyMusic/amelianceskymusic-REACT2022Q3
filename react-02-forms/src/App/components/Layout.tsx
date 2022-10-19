@@ -9,6 +9,7 @@ export class Layout extends Component {
           <NavLink end to="/">
             Main
           </NavLink>
+          <NavLink to="/form">Form</NavLink>
           <NavLink to="/about">About</NavLink>
         </header>
         <Outlet />

@@ -6,6 +6,7 @@ interface IDropdownProps {
   options: string[];
   error?: string | null;
   title?: string;
+  testId?: string;
   name: string;
 }
 
@@ -16,13 +17,19 @@ export class Dropdown extends Component<IDropdownProps> {
     this.input = React.createRef();
   }
   render() {
-    const { children, options, title, error, name } = this.props;
+    const { children, options, title, error, name, testId } = this.props;
     const { input } = this;
     return (
       <label className="dropdown">
         {children}
         <span className="dropdown__error input-error">{error}</span>
-        <select className="dropdown__select" name={name} ref={input} defaultValue={title}>
+        <select
+          className="dropdown__select"
+          name={name}
+          ref={input}
+          defaultValue={title}
+          data-testid={testId}
+        >
           {title && (
             <option className="dropdown__option" value={title} disabled>
               {title}

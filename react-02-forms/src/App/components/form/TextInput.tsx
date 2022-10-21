@@ -8,6 +8,7 @@ interface ITextInputProps {
   minLength?: number;
   maxLength?: number;
   error?: string | null;
+  testId?: string;
   name: string;
 }
 
@@ -18,7 +19,7 @@ export class TextInput extends Component<ITextInputProps> {
     this.input = React.createRef();
   }
   render() {
-    const { children, name, placeholder, required, error, pattern, minLength, maxLength } =
+    const { children, name, placeholder, required, error, pattern, minLength, maxLength, testId } =
       this.props;
     const { input } = this;
     return (
@@ -35,6 +36,7 @@ export class TextInput extends Component<ITextInputProps> {
           pattern={pattern}
           minLength={minLength}
           maxLength={maxLength}
+          data-testid={testId}
         ></input>
       </label>
     );

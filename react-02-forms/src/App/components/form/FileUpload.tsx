@@ -5,6 +5,7 @@ interface IFileUploadProps {
   placeholder?: string;
   error?: string | null;
   accept?: string;
+  testId?: string;
   name: string;
 }
 
@@ -20,7 +21,7 @@ export class FileUpload extends Component<IFileUploadProps> {
   }
 
   render() {
-    const { children, name, placeholder, error, accept } = this.props;
+    const { children, name, placeholder, error, accept, testId } = this.props;
     const { input } = this;
     return (
       <label className="file-upload">
@@ -33,6 +34,7 @@ export class FileUpload extends Component<IFileUploadProps> {
           placeholder={placeholder}
           accept={accept || ''}
           ref={input}
+          data-testid={testId}
         />
       </label>
     );

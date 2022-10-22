@@ -13,15 +13,9 @@ interface ITextInputProps {
 }
 
 export class TextInput extends Component<ITextInputProps> {
-  private input: React.RefObject<HTMLInputElement>;
-  constructor(props: ITextInputProps) {
-    super(props);
-    this.input = React.createRef();
-  }
   render() {
     const { children, name, placeholder, required, error, pattern, minLength, maxLength, testId } =
       this.props;
-    const { input } = this;
     return (
       <label className="text-input">
         {children}
@@ -31,7 +25,6 @@ export class TextInput extends Component<ITextInputProps> {
           type="input"
           name={name}
           placeholder={placeholder}
-          ref={input}
           required={required}
           pattern={pattern}
           minLength={minLength}

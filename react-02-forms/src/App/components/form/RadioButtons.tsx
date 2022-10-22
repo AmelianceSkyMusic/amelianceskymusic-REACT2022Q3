@@ -10,9 +10,6 @@ interface IRadioButtonsProps {
 }
 
 export class RadioButtons extends Component<IRadioButtonsProps> {
-  constructor(props: IRadioButtonsProps) {
-    super(props);
-  }
   render() {
     const { children, error, options, testId, name } = this.props;
     return (

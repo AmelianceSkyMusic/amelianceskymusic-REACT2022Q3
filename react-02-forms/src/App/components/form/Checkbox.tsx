@@ -1,5 +1,5 @@
 import './Checkbox.css';
-import React, { Component } from 'react';
+import React from 'react';
 
 interface ICheckboxProps {
   children?: string;
@@ -8,29 +8,16 @@ interface ICheckboxProps {
   name: string;
 }
 
-export class Checkbox extends Component<ICheckboxProps> {
-  private input: React.RefObject<HTMLInputElement>;
-  constructor(props: ICheckboxProps) {
-    super(props);
-    this.input = React.createRef();
-  }
-
-  render() {
-    const { children, error, name, testId } = this.props;
-    const { input } = this;
-
-    return (
-      <label className="checkbox">
-        {children}
-        <span className="checkbox__error input-error">{error}</span>
-        <input
-          type="checkbox"
-          className="checkbox__input"
-          name={name}
-          ref={input}
-          data-testid={testId}
-        ></input>
-      </label>
-    );
-  }
-}
+export const Checkbox = React.forwardRef<HTMLInputElement, ICheckboxProps>((props, ref) => (
+  <label className="checkbox">
+    {props.children}
+    <span className="checkbox__error input-error">{props.error}</span>
+    <input
+      type="checkbox"
+      className="checkbox__input"
+      name={props.name}
+      ref={ref}
+      data-testid={props.testId}
+    ></input>
+  </label>
+));

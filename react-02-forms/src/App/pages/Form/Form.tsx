@@ -23,6 +23,8 @@ interface IFormState {
 }
 
 export class Form extends Component<unknown, IFormState> {
+  goodPersonRef: React.RefObject<HTMLInputElement>;
+  sexRef: React.RefObject<HTMLInputElement>;
   formRef: React.RefObject<HTMLFormElement>;
   initCard: ICard;
   initErrorsMessage: IErrorsMessage;
@@ -31,6 +33,8 @@ export class Form extends Component<unknown, IFormState> {
   constructor(props: unknown) {
     super(props);
 
+    this.goodPersonRef = React.createRef();
+    this.sexRef = React.createRef();
     this.formRef = React.createRef();
     this.addCardToState = this.addCardToState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -88,9 +92,14 @@ export class Form extends Component<unknown, IFormState> {
   }
 
   resetForm() {
-    this?.formRef?.current?.reset();
-    (document.querySelector('.checkbox__input') as HTMLInputElement).checked = false;
-    (document.querySelector('.switcher__input') as HTMLInputElement).checked = false;
+    this.formRef.current?.reset();
+
+    if (this.goodPersonRef?.current) {
+      this.goodPersonRef.current.checked = false;
+    }
+    if (this.sexRef?.current) {
+      this.sexRef.current.checked = false;
+    }
 
     this.setState({
       errors: {
@@ -174,10 +183,9 @@ export class Form extends Component<unknown, IFormState> {
   }
 
   render() {
-    console.table(this.state.errors.errorsIsVisible);
     const { cards, isSubmitDisabled, previewImgUrl, errors } = this.state;
 
-    const { formRef } = this;
+    const { formRef, goodPersonRef, sexRef } = this;
 
     return (
       <div className="form-page">
@@ -591,12 +599,18 @@ export class Form extends Component<unknown, IFormState> {
           <Checkbox
             name="goodPerson"
             error={errors.errorsMessage.goodPerson}
+            ref={goodPersonRef}
             testId="good-person-checkbox-input"
           >
             I Am A Good Person*:
           </Checkbox>
 
-          <Switcher name="sex" error={errors.errorsMessage.sex} testId="sex-switcher-input">
+          <Switcher
+            name="sex"
+            error={errors.errorsMessage.sex}
+            ref={sexRef}
+            testId="sex-switcher-input"
+          >
             Male/Female*:
           </Switcher>
 

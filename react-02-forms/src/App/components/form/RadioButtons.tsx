@@ -14,13 +14,13 @@ export class RadioButtons extends Component<IRadioButtonsProps> {
     super(props);
   }
   render() {
-    const { children, error, options, testId } = this.props;
+    const { children, error, options, testId, name } = this.props;
     return (
       <div className="radio-buttons" data-testid={testId}>
         {children}
         <span className="radio-buttons__error input-error">{error}</span>
         {options.map((optionValue) => (
-          <RadioButton key={optionValue} name="age">
+          <RadioButton key={optionValue} name={name}>
             {optionValue}
           </RadioButton>
         ))}

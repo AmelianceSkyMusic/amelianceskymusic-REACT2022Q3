@@ -22,7 +22,7 @@ export class Switcher extends Component<ISwitcherProps> {
         <span className="toggle__label">{children}</span>
         <span className="toggle__error input-error">{error}</span>
         <input
-          className="toggle__checkbox"
+          className="toggle__checkbox switcher__input"
           type="checkbox"
           name={name}
           ref={input}

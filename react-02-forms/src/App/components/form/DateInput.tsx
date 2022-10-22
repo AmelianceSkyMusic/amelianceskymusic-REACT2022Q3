@@ -13,16 +13,18 @@ export class DateInput extends Component<IDateInputProps> {
     super(props);
     this.input = React.createRef();
   }
+
   render() {
     const { children, name, error, testId } = this.props;
     const { input } = this;
+
     return (
       <label className="date-input">
         {children}
         <span className="date-input__error input-error">{error}</span>
         <input
-          className="date-input__input"
           type="date"
+          className="date-input__input"
           name={name}
           ref={input}
           data-testid={testId}

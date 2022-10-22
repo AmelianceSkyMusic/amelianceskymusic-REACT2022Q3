@@ -14,9 +14,11 @@ export class Checkbox extends Component<ICheckboxProps> {
     super(props);
     this.input = React.createRef();
   }
+
   render() {
     const { children, error, name, testId } = this.props;
     const { input } = this;
+
     return (
       <label className="checkbox">
         {children}

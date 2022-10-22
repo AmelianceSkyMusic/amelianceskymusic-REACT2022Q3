@@ -8,55 +8,34 @@ import { Switcher } from 'App/components/form/Switcher';
 import { TextInput } from 'App/components/form/TextInput';
 import { RadioButtons } from 'App/components/form/RadioButtons';
 import React, { Component } from 'react';
-import { getRandomNumber } from 'asmlib/asm-scripts';
-
-interface ICard {
-  name: string | null;
-  date: string | null;
-  birthday: string | null;
-  goodPerson: string | null;
-  sex: string | null;
-  age: string | null;
-  image: string | null;
-  id: string | null;
-}
+import { isFieldsValid } from './isFieldsValid';
+import { ICard, IErrors, IErrorsIsVisible, IErrorsMessage } from './types';
+import { getValidationErrors } from './getValidationErrors';
+import { getCardDataFromForm } from './getCardDataFromForm';
+import { isValuesValid } from './isValuesValid';
 
 interface IFormState {
   isSubmitDisabled: boolean;
+  isInitForm: boolean;
   previewImgUrl: string | null;
-  errors: { [key: string]: string | null };
+  errors: IErrors;
   cards: ICard[];
 }
 
 export class Form extends Component<unknown, IFormState> {
   formRef: React.RefObject<HTMLFormElement>;
   initCard: ICard;
-
-  state: IFormState = {
-    isSubmitDisabled: true,
-    previewImgUrl: null,
-    errors: {
-      name: null,
-      date: null,
-      birthday: null,
-      goodPerson: null,
-      sex: null,
-      age: null,
-      image: null,
-    },
-    cards: [],
-  };
+  initErrorsMessage: IErrorsMessage;
+  initErrorsIsVisible: IErrorsIsVisible;
 
   constructor(props: unknown) {
     super(props);
-    this.formRef = React.createRef();
 
-    this.getFieldsDataFromForm = this.getFieldsDataFromForm.bind(this);
-    this.validation = this.validation.bind(this);
-    this.addCard = this.addCard.bind(this);
+    this.formRef = React.createRef();
+    this.addCardToState = this.addCardToState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.resetFormHandler = this.resetFormHandler.bind(this);
+    this.resetForm = this.resetForm.bind(this);
 
     this.initCard = {
       name: null,
@@ -68,138 +47,70 @@ export class Form extends Component<unknown, IFormState> {
       image: null,
       id: null,
     };
-  }
 
-  getFieldsDataFromForm(): ICard {
-    const form = this?.formRef?.current as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const name = formData.get('name')?.toString() || null;
-    const date = formData.get('date')?.toString() || null;
-    const birthday = formData.get('birthday')?.toString() || null;
-    const goodPerson = formData.get('goodPerson')?.toString() || null;
-    const sex = formData.get('sex')?.toString() || null;
-    const age = formData.get('age')?.toString() || null;
-    const imageObject = formData.get('image') || null;
-    const image =
-      imageObject && imageObject instanceof File && imageObject.name
-        ? URL.createObjectURL(imageObject)
-        : null;
-    const id = getRandomNumber(100_000_000_000, 999_999_999_999).toString();
-
-    const formFieldsData = {
-      name,
-      date,
-      birthday,
-      goodPerson,
-      sex,
-      age,
-      image,
-      id,
+    this.initErrorsMessage = {
+      name: null,
+      date: null,
+      birthday: null,
+      goodPerson: null,
+      sex: null,
+      age: null,
+      image: null,
     };
-    return formFieldsData;
-  }
 
-  validation(formFields: ICard) {
-    let name = null;
-    let date = null;
-    let birthday = null;
-    let goodPerson = null;
-    let sex = null;
-    let age = null;
-    let image = null;
-    let isValidated = true;
+    this.initErrorsIsVisible = {
+      name: false,
+      date: false,
+      birthday: false,
+      goodPerson: false,
+      sex: false,
+      age: false,
+      image: false,
+    };
 
-    if (!formFields.name) {
-      name = '❗❗❗ ERROR: THE INPUT IS SO EMPTY! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    } else if (!formFields.name?.match(/[A-ZÀ-ÿ]/i)) {
-      name = '❗❗❗ ERROR: THE NAME IS SO INVALID! TRY AGAIN ❗❗❗';
-      isValidated = false;
-    } else if (formFields.name && formFields.name?.trim().length <= 4) {
-      name = '❗❗❗ ERROR: THE INPUT IS SO SHORTLY! TRY AGAIN ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.date) {
-      date = '❗❗❗ ERROR: THE INPUT IS SO UNDEFINED! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.birthday) {
-      birthday = '❗❗❗ ERROR: THE INPUT IS SO UNKNOWN! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.goodPerson) {
-      goodPerson = '❗❗❗ ERROR: YOU ARE NOT GOOD ENOUGH! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.sex) {
-      sex = '❗❗❗ ERROR: YOUR SEX NOT DEFINED ENOUGH! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.age) {
-      age = '❗❗❗ ERROR: YOU ARE SO NO HAVE AGE! TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    if (!formFields.image) {
-      image = '❗❗❗ ERROR: DO YOU HAVE ANY BEAUTIFUL PICTURE? TRY AGAIN! ❗❗❗';
-      isValidated = false;
-    }
-
-    this.setState({
+    this.state = {
+      isSubmitDisabled: true,
+      isInitForm: true,
+      previewImgUrl: null,
       errors: {
-        name,
-        date,
-        birthday,
-        goodPerson,
-        sex,
-        age,
-        image,
+        errorsMessage: this.initErrorsMessage,
+        errorsIsVisible: this.initErrorsIsVisible,
       },
-    });
-    return isValidated;
+      cards: [],
+    };
   }
 
-  addCard(formFields: ICard) {
-    if (
-      formFields.name &&
-      formFields.date &&
-      formFields.birthday &&
-      formFields.goodPerson &&
-      formFields.sex &&
-      formFields.age &&
-      formFields.image &&
-      formFields.id
-    ) {
-      this.setState({ cards: [...this.state.cards, formFields] });
+  addCardToState(formFields: ICard) {
+    const { name, date, birthday, goodPerson, sex, age, image, id } = formFields;
+    if (name && date && birthday && goodPerson && sex && age && image && id) {
+      this.setState((state) => ({ cards: [...state.cards, formFields] }));
     }
   }
 
-  resetFormHandler() {
+  resetForm() {
     this?.formRef?.current?.reset();
+    (document.querySelector('.checkbox__input') as HTMLInputElement).checked = false;
+    (document.querySelector('.switcher__input') as HTMLInputElement).checked = false;
 
     this.setState({
       errors: {
-        name: null,
-        date: null,
-        birthday: null,
-        goodPerson: null,
-        sex: null,
-        age: null,
-        image: null,
+        errorsMessage: this.initErrorsMessage,
+        errorsIsVisible: this.initErrorsIsVisible,
       },
       previewImgUrl: null,
       isSubmitDisabled: true,
+      isInitForm: true,
     });
   }
 
-  onChangeHandler() {
+  onChangeHandler(event: React.FormEvent<HTMLFormElement>) {
     const form = this?.formRef?.current as HTMLFormElement;
+
+    // *----- get changed field -----
+    const eventTarget = event.target as HTMLInputElement;
+    const currentFieldName = eventTarget?.name;
+
+    // *----- get image -----
     const formData = new FormData(form);
     const imageObject = formData.get('image') || null;
     const image =
@@ -207,26 +118,65 @@ export class Form extends Component<unknown, IFormState> {
         ? URL.createObjectURL(imageObject)
         : null;
 
-    if (this.state.isSubmitDisabled === true) {
-      this.setState({ isSubmitDisabled: false, previewImgUrl: image });
+    const isVisibleCurrent = { ...this.state.errors.errorsIsVisible, [currentFieldName]: false };
+
+    const isVisibleValues = Object.values(isVisibleCurrent);
+
+    const isAnyErrors = isValuesValid(isVisibleValues);
+
+    if (this.state.isSubmitDisabled === true && (isAnyErrors || this.state.isInitForm)) {
+      this.setState((state) => ({
+        errors: {
+          errorsMessage: { ...state.errors.errorsMessage, [currentFieldName]: null },
+          errorsIsVisible: { ...isVisibleCurrent },
+        },
+        previewImgUrl: image,
+        isSubmitDisabled: false,
+      }));
     } else {
-      this.setState({ previewImgUrl: image });
+      this.setState((state) => ({
+        errors: {
+          errorsMessage: { ...state.errors.errorsMessage, [currentFieldName]: null },
+          errorsIsVisible: { ...isVisibleCurrent },
+        },
+        previewImgUrl: image,
+      }));
     }
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formFieldsData = this.getFieldsDataFromForm();
 
-    if (this.validation(formFieldsData)) {
-      this.addCard(formFieldsData);
-      this.resetFormHandler();
+    const form = this?.formRef?.current as HTMLFormElement;
+    const cardData = getCardDataFromForm(form);
+
+    const validationErrors = getValidationErrors(cardData);
+    const { message, isVisible } = validationErrors;
+
+    const hasNoErrors = isFieldsValid(message);
+
+    const isVisibleCurrent = { ...this.state.errors.errorsIsVisible, ...isVisible };
+
+    if (hasNoErrors) {
+      this.addCardToState(cardData);
+      this.resetForm();
       alert('Congratulations! You are good enough! Card is on page!');
+    } else {
+      this.setState({
+        errors: {
+          errorsMessage: { ...message },
+          errorsIsVisible: { ...isVisibleCurrent },
+        },
+        isSubmitDisabled: !hasNoErrors,
+        isInitForm: false,
+      });
     }
   }
 
   render() {
+    console.table(this.state.errors.errorsIsVisible);
     const { cards, isSubmitDisabled, previewImgUrl, errors } = this.state;
+
     const { formRef } = this;
 
     return (
@@ -242,11 +192,16 @@ export class Form extends Component<unknown, IFormState> {
             Create Your Beautiful Card
           </Button>
 
-          <TextInput name="name" placeholder="please, type your name" error={errors.name}>
+          <TextInput
+            name="name"
+            placeholder="please, type your name"
+            error={errors.errorsMessage.name}
+            testId="name-text-input"
+          >
             Your Name*:
           </TextInput>
 
-          <DateInput name="date" error={errors.date}>
+          <DateInput name="date" error={errors.errorsMessage.date} testId="date-date-input">
             Your Favorite Date*:
           </DateInput>
 
@@ -627,16 +582,21 @@ export class Form extends Component<unknown, IFormState> {
               '31 October',
               '31 September',
             ]}
-            error={errors.birthday}
+            error={errors.errorsMessage.birthday}
+            testId="birthday-dropdown-input"
           >
             Your Birthday*:
           </Dropdown>
 
-          <Checkbox name="goodPerson" error={errors.goodPerson}>
+          <Checkbox
+            name="goodPerson"
+            error={errors.errorsMessage.goodPerson}
+            testId="good-person-checkbox-input"
+          >
             I Am A Good Person*:
           </Checkbox>
 
-          <Switcher name="sex" error={errors.sex}>
+          <Switcher name="sex" error={errors.errorsMessage.sex} testId="sex-switcher-input">
             Male/Female*:
           </Switcher>
 
@@ -794,23 +754,29 @@ export class Form extends Component<unknown, IFormState> {
               '2',
               '1',
             ]}
-            error={errors.age}
+            error={errors.errorsMessage.age}
+            testId="age-radio-input"
           >
             Your Age*:
           </RadioButtons>
 
-          <FileUpload name="image" accept=".jpg, .jpeg, .png" error={errors.image}>
+          <FileUpload
+            name="image"
+            accept=".jpg, .jpeg, .png"
+            error={errors.errorsMessage.image}
+            testId="image-file-input"
+          >
             Upload Your Avatarka*:
           </FileUpload>
           {previewImgUrl && (
             <img className="form__img-preview" src={previewImgUrl} alt={previewImgUrl} />
           )}
         </form>
-        <button onClick={this.resetFormHandler}>Reset Current Form</button>
+        <button onClick={this.resetForm}>Reset Current Form</button>
         <>
           {cards.length > 0 &&
             cards.map((card) => (
-              <div key={card.id} className="form-card">
+              <div key={card.id} className="form-card" data-testid="card">
                 <h2>Your Name: {card.name}</h2>
                 <p>Your Favorite Date: {card.date}</p>
                 <p>Your Birthday: {card.birthday}</p>

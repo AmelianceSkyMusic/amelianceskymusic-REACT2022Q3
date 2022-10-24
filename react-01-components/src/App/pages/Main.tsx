@@ -24,11 +24,12 @@ export class Main extends Component {
 
   async componentDidMount() {
     try {
-      const response = await api.google.getSheetData({
-        sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',
-      });
-      const dataArr = api.google.convertors.convertDataToArrayOfObjects(response);
-      this.setState({ initCards: dataArr, cards: dataArr, isLoaded: true });
+      const response = await api.google
+        .getSheetData({
+          sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',
+        })
+        .then((res) => api.google.convertors.convertDataToArrayOfObjects(res));
+      this.setState({ initCards: response, cards: response, isLoaded: true });
     } catch (error) {
       this.setState({ error: error });
     }
@@ -39,7 +40,7 @@ export class Main extends Component {
   }
 
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const elem = event.target as HTMLInputElement;
+    const elem = event.target;
     const searchValue = elem.value;
     this.setState({ searchValue: searchValue });
   }
@@ -58,12 +59,13 @@ export class Main extends Component {
 
     return (
       <div className="main-page">
-        <h1 className="">Main</h1>
+        <h1>Main</h1>
         <Search
           value={searchValue}
           onChange={this.handleSearchChange.bind(this)}
-          searchApply={this.handleSearchButtonApply.bind(this)}
-        ></Search>
+          onSearchApply={this.handleSearchButtonApply.bind(this)}
+        />
+
         <div className="cards">
           {error && <p>Something went wrong!</p>}
           {isLoaded ? (

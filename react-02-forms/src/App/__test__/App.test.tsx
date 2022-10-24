@@ -9,6 +9,7 @@ describe('App component', () => {
     const linkAbout = screen.getByRole('link', { name: /about/i });
     expect(linkAbout.getAttribute('href')).toBe('/about');
   });
+
   it('show 404 if bad route', () => {
     const badRoute = '/some/bad/route';
     render(

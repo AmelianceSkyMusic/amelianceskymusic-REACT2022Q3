@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Card } from '../Card';
+import { Card } from './Card';
 import { ICard } from 'App/types/ICard';
+
 const cardsMock: ICard[] = [
   {
     id: '0000001',
@@ -40,6 +41,7 @@ const cardsMock: ICard[] = [
     image: "Nano X1 Grit Men's Training Shoes",
   },
 ];
+
 describe('Card component', () => {
   it('card render', () => {
     render(<Card {...cardsMock[0]} />);
@@ -47,6 +49,7 @@ describe('Card component', () => {
     expect(screen.getByText(/Nike Air Force 1 '07/i) as HTMLElement).toBeInTheDocument();
     expect(screen.getByText(/2014/i) as HTMLElement).toBeInTheDocument();
   });
+
   it('cards render mock', async () => {
     render(
       <>
@@ -59,6 +62,7 @@ describe('Card component', () => {
     expect(screen.getByText(/2021/i) as HTMLElement).toBeInTheDocument();
     expect(screen.getByText(/2019/i) as HTMLElement).toBeInTheDocument();
   });
+
   it('render image', async () => {
     render(
       <>
@@ -70,6 +74,7 @@ describe('Card component', () => {
     expect(screen.getByAltText(/Nike Air Force 1 '07/i) as HTMLElement).toBeInTheDocument();
     expect(screen.getByAltText(/reebok/i) as HTMLElement).toBeInTheDocument();
   });
+
   it('Card Snapshot', () => {
     const cards = render(
       <>

@@ -1,6 +1,8 @@
 import { IGoogleSheetsData } from '../interfaces/IGoogleSheetsData';
 
-export function convertDataToArrayOfObjects(data: IGoogleSheetsData) {
+export function convertDataToArrayOfObjects(
+  data: IGoogleSheetsData
+): Record<string, string | number | null>[] {
   const table = data.table;
   const tableRowsData = table.rows.slice(1);
 

@@ -1,27 +1,27 @@
 export interface IGoogleSheetsData {
-	version: string;
-	reqId:   string;
-	status:  string;
-	sig:     string;
-	table:   Table;
+  version: string;
+  reqId: string;
+  status: string;
+  sig: string;
+  table: Table;
 }
 
 export interface Table {
-	cols:             Col[];
-	rows:             Row[];
-	parsedNumHeaders: number;
+  cols: Col[];
+  rows: Row[];
+  parsedNumHeaders: number;
 }
 
 export interface Col {
-	id:    string;
-	label: string;
-	type:  string;
+  id: string;
+  label: string;
+  type: string;
 }
 
 export interface Row {
-	c: C[];
+  c: C[];
 }
 
 export interface C {
-	v: string;
+  v: string;
 }

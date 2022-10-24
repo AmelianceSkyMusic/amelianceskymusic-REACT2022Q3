@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Search } from './Search';
-import { Main } from 'App/pages/Main';
+import { Search } from '../Search';
+import { Main } from '../../pages/Main';
 const onChange = jest.fn();
 const searchApply = jest.fn();
 describe('Search component', () => {

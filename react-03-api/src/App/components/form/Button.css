@@ -1,0 +1,26 @@
+input[type="submit"] {
+  width: 320px;
+  text-align: center;
+  border-radius: 50%;
+  box-shadow: 8px 8px greenyellow;
+  border: 2px solid greenyellow;
+  background-color: white;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: 16px 16px black;
+}
+
+input[type="submit"]:active {
+  border-radius: 0;
+  background-color: greenyellow;
+}
+
+input[type="submit"]:disabled {
+  opacity: 50%;
+  cursor: default;
+  pointer-events: none;
+}

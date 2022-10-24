@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Main } from './Main';
+import { Main } from '../Main';
 import api from 'App/api';
 class LocalStorage {
   store: { [key: string]: string };

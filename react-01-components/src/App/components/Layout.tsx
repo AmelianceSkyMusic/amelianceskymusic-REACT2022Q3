@@ -1,6 +1,7 @@
-import './Layout.css';
 import React, { Component } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import './Layout.css';
+
 export class Layout extends Component {
   render() {
     return (

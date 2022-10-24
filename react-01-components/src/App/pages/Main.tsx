@@ -1,10 +1,10 @@
-import './Main.css';
 import React, { Component } from 'react';
 import api from 'App/api';
 import { Card } from 'App/components/Card';
 import { ICard } from 'App/types/ICard';
 import { Search } from 'App/components/Search';
 import { Loading } from 'App/components/Loading';
+import './Main.css';
 
 interface IState {
   initCards: ICard[];

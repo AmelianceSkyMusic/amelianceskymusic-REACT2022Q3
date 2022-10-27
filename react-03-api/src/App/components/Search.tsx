@@ -2,34 +2,38 @@ import React, { Component } from 'react';
 
 interface ISearchProps {
   value: string;
+  onApply: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  searchApply: () => void;
 }
-
 interface ISearchState {
-  value: string;
+  searchValue: string;
 }
 
 export class Search extends Component<ISearchProps, ISearchState> {
-  state: ISearchState = {
-    value: this.props.value,
-  };
+  constructor(props: ISearchProps) {
+    super(props);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.state = {
+      searchValue: this.props.value,
+    };
+  }
 
   handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.props.onChange(event);
     const elem = event.target as HTMLInputElement;
-    this.setState({ value: elem.value });
+    this.setState({ searchValue: elem.value });
+    this.props.onChange(event);
   }
 
   render() {
-    const { value } = this.state;
+    const { onApply } = this.props;
+    const { searchValue } = this.state;
     return (
       <div className="search">
-        <button onClick={() => this.props.searchApply()}>Search</button>
         <input
           type="search"
-          value={value}
-          onChange={(event) => this.handleSearchChange(event)}
+          value={searchValue}
+          onKeyDown={onApply}
+          onChange={this.handleSearchChange}
           placeholder="Search"
         ></input>
       </div>

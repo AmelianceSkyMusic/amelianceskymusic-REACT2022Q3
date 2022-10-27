@@ -1,26 +1,57 @@
-import './Card.css';
 import React, { Component } from 'react';
 import { ICard } from 'App/types/ICard';
+import './Card.css';
+import { Modal } from './Modal';
 
-export class Card extends Component<ICard> {
+type ICardProps = ICard;
+interface ICardState {
+  isShownModal: boolean;
+}
+
+export class Card extends Component<ICardProps, ICardState> {
+  constructor(props: ICardProps) {
+    super(props);
+    this.handlerOnPreviewClick = this.handlerOnPreviewClick.bind(this);
+    this.handlerModalClick = this.handlerModalClick.bind(this);
+    this.state = {
+      isShownModal: false,
+    };
+  }
+  handlerOnPreviewClick() {
+    this.setState({ isShownModal: true });
+  }
+
+  handlerModalClick() {
+    this.setState({ isShownModal: false });
+  }
+
   render() {
-    const { brand, color, name, popular, price, size, year, image } = this.props;
+    const { title, server, id, secret } = this.props;
+    const { isShownModal } = this.state;
 
     return (
-      <div className="card">
-        <div className="card__visual">
-          <img className="card__brand" src={`assets/svg/${brand}.svg`} alt={brand || 'brand'} />
-          <img className="card__img" src={`assets/img/${image}.png`} alt={image || 'img'} />
+      <>
+        <div className="card" onClick={this.handlerOnPreviewClick}>
+          <img
+            className="card__img"
+            src={`https://live.staticflickr.com/${server}/${id}_${secret}_q.jpg`}
+            alt={title}
+            loading="lazy"
+          />
         </div>
-        <div className="card__info">
-          <h2>{name}</h2>
-          <p>COLOR: {color}</p>
-          <p>{popular}</p>
-          <p>PRICE: ${price}</p>
-          <p>SIZE: {size}</p>
-          <p>{year}</p>
-        </div>
-      </div>
+        {isShownModal && (
+          <Modal closeModal={this.handlerModalClick}>
+            <>
+              <img
+                className="card-modal__img"
+                src={`https://live.staticflickr.com/${server}/${id}_${secret}_b.jpg`}
+                alt={title}
+              />
+              <span className="card-modal__title">{title}</span>
+            </>
+          </Modal>
+        )}
+      </>
     );
   }
 }

@@ -11,25 +11,21 @@ export async function getSheetData({
   sheetId,
   tqx = 'out:json',
   pageTitle = 'sheet',
-  range = undefined,
+  range = '',
 }: IGetSheetData) {
-  const params: string[] = [];
-  if (tqx) params.push(`tqx=${tqx}`);
-  if (pageTitle) params.push(`sheet=${pageTitle}`);
-  if (range) params.push(`range=${range}`);
+  const URLParams = new URLSearchParams();
+  if (tqx) URLParams.append('tqx', tqx);
+  if (pageTitle) URLParams.append('sheet', pageTitle);
+  if (range) URLParams.append('range', range);
 
   try {
-    const response = await fetch(`${BASE_GOOGLE_SHEET_URL}${sheetId}/gviz/tq?${params.join('&')}`);
+    const response = await fetch(`${BASE_GOOGLE_SHEET_URL}${sheetId}/gviz/tq?${URLParams}`);
 
     const textData = await response.text();
     const data = JSON.parse(textData.substring(47).slice(0, -2));
 
     return data;
   } catch (error) {
-    //  if (axios.isAxiosError(error)) {
-    //    console.error('AXIOS-ERROR (getSpreadsheetData):', error);
-    //  } else {
-    //    console.error('ERROR (getSpreadsheetData):', error);
-    //  }
+    console.error(error);
   }
 }

@@ -1,7 +1,7 @@
 import { IGoogleSheetsData } from '../interfaces/IGoogleSheetsData';
 
 export function convertToDataFromTableWithFirstRowHeading(data: IGoogleSheetsData) {
-  const dataObj: { [key: string]: string[] } = {};
+  const dataObj: Record<string, string[]> = {};
   const table = data.table;
   const maxLengthOfColumn: number = table.rows[0].c.length;
   for (let i = 0; i < maxLengthOfColumn; i++) {

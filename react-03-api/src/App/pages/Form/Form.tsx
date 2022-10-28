@@ -196,7 +196,7 @@ export class Form extends Component<unknown, IFormState> {
           className="form"
           ref={formRef}
         >
-          <Button className="form__submit" name="submitButton" isDisabled={isSubmitDisabled}>
+          <Button className="button form__submit" name="submitButton" isDisabled={isSubmitDisabled}>
             Create Your Beautiful Card
           </Button>
 
@@ -786,7 +786,9 @@ export class Form extends Component<unknown, IFormState> {
             <img className="form__img-preview" src={previewImgUrl} alt={previewImgUrl} />
           )}
         </form>
-        <button onClick={this.resetForm}>Reset Current Form</button>
+        <button className="button" onClick={this.resetForm}>
+          Reset Current Form
+        </button>
         <>
           {cards.length > 0 &&
             cards.map((card) => (

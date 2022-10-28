@@ -1,7 +1,8 @@
 .dropdown__select {
-  text-align: center;
   width: 320px;
-  border-radius: 50%;
-  box-shadow: 8px 8px aquamarine;
-  border: 2px solid aquamarine;
+  border-radius: 1000px;
+  border: none;
+  height: 32px;
+  padding: 16px;
+  color: black;
 }

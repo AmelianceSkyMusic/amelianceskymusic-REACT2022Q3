@@ -1,5 +1,5 @@
-import './Checkbox.css';
 import React from 'react';
+import './Checkbox.css';
 
 interface ICheckboxProps {
   children?: string;

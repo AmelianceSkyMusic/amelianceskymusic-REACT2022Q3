@@ -1,9 +1,15 @@
 .header {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 16px;
   padding-bottom: 16px;
 }
+
+.footer {
+  margin-top: auto;
+}
+
 .active {
   font-weight: bold;
 }

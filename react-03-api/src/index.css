@@ -1,7 +1,16 @@
 * {
   box-sizing: border-box;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", serif;
-  color: blue;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 
 p,
@@ -11,49 +20,35 @@ h3,
 h4 {
   margin: 0;
   padding: 0;
-  line-height: 100%;
-  transform: scale(1, 1.6);
+  line-height: 140%;
 }
 
-h1 {
-  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
-}
-
-p {
-  line-height: 200%;
-  transform: scale(1.6, 1);
-}
-
-button {
-  width: 320px;
-  text-align: center;
-  border-radius: 50%;
-  box-shadow: 8px 8px greenyellow;
-  border: 2px solid greenyellow;
+.button {
+  border-radius: 1000px;
+  border: none;
+  padding: 4px 16px;
   background-color: white;
 }
 
-button:hover {
-  border-radius: 0;
+.button:hover {
   cursor: pointer;
-  box-shadow: 16px 16px black;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
 }
 
-button:active {
-  border-radius: 0;
-  background-color: greenyellow;
+.button:active {
+  background-color: gainsboro;
 }
 
-button:disabled {
+.button:disabled {
   opacity: 50%;
 }
 
 input {
-  text-align: center;
   width: 320px;
-  border-radius: 50%;
-  box-shadow: 8px 8px aquamarine;
-  border: 2px solid aquamarine;
+  border-radius: 1000px;
+  border: none;
+  height: 32px;
+  padding: 16px;
 }
 
 label {
@@ -62,5 +57,11 @@ label {
 
 .input-error {
   color: red;
+  padding: 8px 16px;
+  border-radius: 1000px;
   font-weight: bold;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
 }

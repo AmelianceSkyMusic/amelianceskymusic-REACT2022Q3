@@ -60,9 +60,8 @@ export class Main extends Component<unknown, IState> {
           sort: 'relevance',
           perPage: 200,
         });
-        const { photo, pages, page } = response.photos;
 
-        console.log(`page: ${page}/${pages} ?`);
+        const { photo, pages } = response.photos;
 
         this.setState((state) => ({
           initCards: photo,
@@ -143,7 +142,9 @@ export class Main extends Component<unknown, IState> {
           {isError && <p>Something went wrong!</p>}
           {isLoaded
             ? cards?.length > 0 &&
-              cards.map((card, i) => <Card key={`${card.id}-${i}`} {...card} />)
+              cards.map((card, i) => (
+                <Card key={`${card.id}-${i}`} testId={`card-${i}`} {...card} />
+              ))
             : isSearchApplied && <Loader />}
         </div>
         {cards?.length > 0 && isScrollLoading && <h2>LOADING...</h2>}

@@ -36,7 +36,6 @@ export class Card extends Component<ICardProps, ICardState> {
             className="card__img"
             src={`https://live.staticflickr.com/${server}/${id}_${secret}_q.jpg`}
             alt={title}
-            loading="lazy"
           />
         </div>
         {isShownModal && (

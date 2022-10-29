@@ -39,7 +39,11 @@ export class Modal extends Component<IModalProps> {
     return (
       <Portal>
         <div className="modal" ref={this.modalRef}>
-          <Backdrop onClick={this.backdropClickHandler} ref={this.backdropRef} />
+          <Backdrop
+            onClick={this.backdropClickHandler}
+            ref={this.backdropRef}
+            data-testid="backdrop"
+          />
           <div className="modal__content">{this.props.children}</div>
         </div>
       </Portal>

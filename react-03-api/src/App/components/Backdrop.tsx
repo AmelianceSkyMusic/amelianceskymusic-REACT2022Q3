@@ -7,5 +7,5 @@ interface IBackdropProps {
 }
 
 export const Backdrop = React.forwardRef<HTMLDivElement, IBackdropProps>((props, ref) => (
-  <div className="backdrop" onClick={props.onClick} ref={ref} />
+  <div className="backdrop" onClick={props.onClick} ref={ref} data-testid="backdrop" />
 ));

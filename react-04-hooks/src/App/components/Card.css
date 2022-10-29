@@ -1,0 +1,63 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 102px;
+  height: 102px;
+  /* padding: 72px; */
+
+  overflow: hidden;
+  background: rgb(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.card__info {
+  display: flex;
+  justify-content: center;
+  /* flex-direction: column; */
+  /* justify-content: end; */
+  /* align-self: start; */
+  /* width: 50%; */
+  text-align: center;
+}
+
+.card__img {
+  width: 60%;
+  height: 60%;
+  display: flex;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card__img {
+  transform: scale(200%);
+}
+
+.card-modal__img {
+  border-radius: 48px;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.card-modal__title {
+  position: absolute;
+  bottom: 0px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  background-color: rgb(255, 255, 255, 0.8);
+  transform: scale(96%, 98%);
+  border-radius: 1000px;
+  padding: 16px 32px;
+  margin: 32px;
+}
+
+.modal__content:hover .card-modal__title {
+  opacity: 100%;
+  transform: scale(100%);
+}

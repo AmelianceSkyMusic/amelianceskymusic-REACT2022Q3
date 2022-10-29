@@ -1,0 +1,23 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  max-width: 100%;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.search {
+  z-index: 1;
+  position: sticky;
+  top: 32px;
+  display: flex;
+}

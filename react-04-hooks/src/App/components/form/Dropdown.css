@@ -1,0 +1,8 @@
+.dropdown__select {
+  width: 320px;
+  border-radius: 1000px;
+  border: none;
+  height: 32px;
+  padding: 16px;
+  color: black;
+}

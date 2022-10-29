@@ -1,54 +1,74 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Main } from '../Main';
-import api from 'App/api';
+import { responseMock } from '__mocks__/responseMock';
+
 class LocalStorage {
   store: { [key: string]: string };
+
   constructor() {
     this.store = {};
   }
+
   getItem(key: string) {
     return this.store[key] || null;
   }
+
   setItem(key: string, value: string) {
     this.store[key] = value.toString();
   }
+
   removeItem(key: string) {
     delete this.store[key];
   }
+
   clear() {
     this.store = {};
   }
 }
+
 describe('Local Storage', () => {
-  Object.defineProperty(window, 'localStorage', {
-    value: new LocalStorage(),
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: new LocalStorage(),
+    });
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(
+        () => Promise.resolve({ json: () => Promise.resolve(responseMock) }) as Promise<Response>
+      ) as jest.Mock;
   });
-  it('should set and get data', async () => {
-    const { rerender } = render(<Main />);
-    await screen.findAllByText(/nike/i);
-    userEvent.type(screen.getByPlaceholderText('Search'), 'Nike');
+
+  it('should set and get data to Local Storage', async () => {
+    const { rerender, unmount } = render(<Main />);
+    expect(screen.queryByRole('img')).toBeNull();
+    userEvent.type(screen.getByPlaceholderText('Search'), 'Cats{enter}'); // do fetch ¯\_(ツ)_/¯ but should not do request to server
     rerender(<Main />);
-    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Nike');
-    userEvent.clear(screen.getByPlaceholderText('Search'));
-    userEvent.type(screen.getByPlaceholderText('Search'), 'Reebok');
-    rerender(<Main />);
-    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Reebok');
-    userEvent.click(screen.getByRole('button'));
+    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Cats');
+    unmount();
+    cleanup();
   });
 });
-describe('Fetch', () => {
-  it('should return data', async () => {
-    const response = await api.google.getSheetData({
-      sheetId: '11IF6n311xG3ycdE_mOQaZizL7NFzeynvFu2ni1sghQ0',
+
+describe('Search', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: new LocalStorage(),
     });
-    expect(response).not.toBeNull();
+    localStorage.removeItem('searchValue'); // clear locals storage for fixing bugs
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(
+        () => Promise.resolve({ json: () => Promise.resolve(responseMock) }) as Promise<Response>
+      ) as jest.Mock;
   });
-  it('should return error', async () => {
-    const response = await api.google.getSheetData({
-      sheetId: '00000000000000',
-    });
-    expect(response).toBeUndefined();
+  it('should search typing work', async () => {
+    const { unmount } = render(<Main />);
+    expect(screen.queryByRole('img')).toBeNull();
+    userEvent.type(screen.getByPlaceholderText('Search'), 'Cars');
+    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Cars');
+    unmount();
+    cleanup();
   });
 });

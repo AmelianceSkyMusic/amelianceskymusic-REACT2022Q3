@@ -1,154 +1,150 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import api from 'App/api';
 import { Card } from 'App/components/Card';
-import { ICard } from 'App/types/ICard';
+import { IVideoItem } from 'App/types/IYoutubeResponse';
 import { Search } from 'App/components/Search';
 import { Loader } from 'App/components/Loader';
 import './Main.css';
 import { getScrollDIrection } from 'asmlib/asm-scripts/getScrollDirection';
-interface IState {
-  initCards: ICard[];
-  cards: ICard[];
-  isLoaded: boolean;
-  isScrollLoading: boolean;
-  searchValue: string;
-  isSearchApplied: boolean;
-  isError: boolean;
-  sorting:
-    | null
-    | 'date-posted-asc'
-    | 'date-posted-desc'
-    | 'date-taken-asc'
-    | 'date-taken-asc'
-    | 'date-taken-desc'
-    | 'interestingness-desc'
-    | 'interestingness-asc'
-    | 'relevance';
-  pages: null | number;
-  page: number;
-}
-export class Main extends Component<unknown, IState> {
-  constructor(props: unknown) {
-    super(props);
-    this.fetchData = this.fetchData.bind(this);
-    this.searchApplyHandler = this.searchApplyHandler.bind(this);
-    this.searchOnChangeHandler = this.searchOnChangeHandler.bind(this);
-    this.scrollHandler = this.scrollHandler.bind(this);
-    this.state = {
-      initCards: [],
-      cards: [],
-      isLoaded: false,
-      isScrollLoading: false,
-      searchValue: localStorage.getItem('searchValue') || '',
-      isSearchApplied: false,
-      sorting: null,
-      pages: null,
-      page: 1,
-      isError: false,
-    };
-  }
 
-  async fetchData(pageIncrement: number) {
-    if (this.state.searchValue.trim() !== '') {
-      try {
-        const response = await api.flickr.getPhotos({
-          text: this.state.searchValue,
-          page:
-            this.state.pages && this.state.page + pageIncrement > this.state.pages
-              ? 1
-              : this.state.page + pageIncrement,
-          sort: 'relevance',
-          perPage: 200,
-        });
+export function Main() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [cards, setCards] = useState<IVideoItem[]>([]);
 
-        await api.google.youtube.get('ameliance skymusic');
+  const [cardsCount, setCardsCount] = useState(0);
+  const cardsCountRef = useRef<number>();
+  cardsCountRef.current = cardsCount;
 
-        const { photo, pages } = response.photos;
+  const [isLastPage, setIsLastPage] = useState(false);
+  const isLastPageRef = useRef<boolean>();
+  isLastPageRef.current = isLastPage;
 
-        this.setState((state) => ({
-          initCards: photo,
-          page:
-            state.pages && state.page + pageIncrement > state.pages
-              ? 1
-              : state.page + pageIncrement,
-          pages: pages,
-          cards: [...state.cards, ...photo],
-          isLoaded: true,
-          isScrollLoading: false,
-          isSearchApplied: false,
-        }));
-      } catch (error) {
-        this.setState({ isError: true, isLoaded: true, isSearchApplied: false });
+  const [nextPage, setNextPage] = useState<string | undefined>();
+  const nextPageRef = useRef<string | undefined>();
+  nextPageRef.current = nextPage;
+
+  const [isScrollLoading, setIsScrollLoading] = useState(false);
+  const isScrollLoadingRef = useRef<boolean>();
+  isScrollLoadingRef.current = isScrollLoading;
+
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('searchValue') || '');
+  const searchValueRef = useRef<string>();
+  searchValueRef.current = searchValue;
+  const [isSearchApplied, setIsSearchApplied] = useState(false);
+
+  const getFetchedData = async (searchValue: string, nextPageArg?: string) => {
+    const response = await api.google.youtube.get(searchValue, nextPageArg);
+    if (response && !response.error) {
+      if (nextPageArg) {
+        setCards((prevCards) => [...prevCards, ...response.items]);
+      } else {
+        setCards(response.items);
       }
+
+      const currentCardsCount = (cardsCountRef.current as number) + response.items.length;
+      const totalCardsCount = response.pageInfo.totalResults;
+      setCardsCount((prevCardsCount) => prevCardsCount + response.items.length);
+
+      if (currentCardsCount < totalCardsCount) {
+        setIsLastPage(false);
+      } else {
+        setIsLastPage(true);
+      }
+
+      setNextPage(response.nextPageToken);
+      setIsSearchApplied(true);
+      setIsScrollLoading(false);
+    } else if (response && response.error) {
+      setIsError(true);
+      if (response.error.code === 403) {
+        setErrorMessage(
+          "That's it! Come back tomorrow. Google quotas for queries are not infinite! ¯\\_(ツ)_/¯"
+        );
+      } else {
+        setErrorMessage(response.error.message);
+      }
+    } else {
+      setIsError(true);
     }
-  }
 
-  async componentDidMount() {
-    if (this.state.searchValue.trim() !== '') {
-      this.setState({ isSearchApplied: true });
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (searchValueRef.current) {
+      getFetchedData(searchValueRef.current);
     }
-    this.fetchData(0);
-    document.addEventListener('scroll', this.scrollHandler);
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  componentWillUnmount() {
-    document.removeEventListener('scroll', this.scrollHandler);
-  }
-
-  async searchApplyHandler(event: React.KeyboardEvent<HTMLInputElement>) {
+  const handlerSearchApply = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      localStorage.setItem('searchValue', this.state.searchValue);
-      this.setState({ isLoaded: false });
-      if (this.state.searchValue.trim() !== '') {
-        this.setState({ isSearchApplied: true, cards: [] });
+      const prevSearchValue = localStorage.getItem('searchValue');
+      const nextSearchValue = searchValue.trim();
+
+      localStorage.setItem('searchValue', nextSearchValue);
+
+      //* prevent to do something if search value do not changed
+      if (prevSearchValue !== nextSearchValue) {
+        //* do fetch if search value is not empty
+        if (nextSearchValue) {
+          console.log('do fetch');
+          setIsLoading(true);
+          getFetchedData(nextSearchValue);
+        } else {
+          console.log('clear');
+          setCards([]);
+          setIsSearchApplied(true);
+        }
       }
-      this.fetchData(0);
     }
-  }
+  };
 
-  searchOnChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const elem = event.target as HTMLInputElement;
-    const searchValue = elem.value;
-    this.setState({ searchValue: searchValue });
-  }
-
-  scrollHandler(event: Event) {
+  const scrollHandler = (event: Event) => {
     const target = event?.target as Document;
     const scrollHeight = target.documentElement.scrollHeight;
     const scrollTop = target.documentElement.scrollTop;
     const innerHeight = window.innerHeight;
+
     const scrollDirection = getScrollDIrection();
     if (
-      !this.state.isScrollLoading &&
-      scrollDirection &&
+      !isLastPageRef.current &&
+      !isScrollLoadingRef.current &&
+      scrollDirection === 'DOWN' &&
       scrollHeight - (scrollTop + innerHeight) < 100
     ) {
-      this.setState({ isScrollLoading: true });
-      this.fetchData(1);
+      setIsScrollLoading(true);
+      if (searchValueRef.current) {
+        getFetchedData(searchValueRef.current, nextPageRef.current);
+      }
     }
-  }
+  };
 
-  render() {
-    const { cards, isLoaded, isScrollLoading, searchValue, isError, isSearchApplied } = this.state;
+  useEffect(() => {
+    document.addEventListener('scroll', scrollHandler);
+    return function cleanup() {
+      document.removeEventListener('scroll', scrollHandler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return (
-      <div className="main-page">
-        <h1>ПОШУКАЙ</h1>
-        <Search
-          value={searchValue}
-          onApply={this.searchApplyHandler}
-          onChange={this.searchOnChangeHandler}
-        />
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
 
-        <div className="cards">
-          {isError && <p>Something went wrong!</p>}
-          {isLoaded
-            ? cards?.length > 0 &&
-              cards.map((card, i) => <Card key={`${card.id}-${i}`} {...card} />)
-            : isSearchApplied && <Loader />}
-        </div>
-        {cards?.length > 0 && isScrollLoading && <h2>LOADING...</h2>}
-      </div>
-    );
-  }
+  return (
+    <main className="main-page">
+      <h1>ПОШУКАЙ</h1>
+      <Search value={searchValue} onChange={handleSearchChange} onKeyDown={handlerSearchApply} />
+      <section className="cards">
+        {isError && <h3 className="h3 error">{errorMessage || 'Sorry! Something went wrong!'}</h3>}
+        {isLoading
+          ? isSearchApplied && <Loader />
+          : cards?.length > 0 && cards.map((card, i) => <Card key={`${card.id}-${i}`} {...card} />)}
+      </section>
+      {cards?.length > 0 && isScrollLoading && !isLastPage && <h2>LOADING...</h2>}
+    </main>
+  );
 }

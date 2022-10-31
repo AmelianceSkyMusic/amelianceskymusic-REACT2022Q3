@@ -1,56 +1,45 @@
-import React, { Component } from 'react';
-import { ICard } from 'App/types/ICard';
+import React, { useState } from 'react';
 import './Card.css';
 import { Modal } from './Modal';
+import { IVideoItem } from 'App/types/IYoutubeResponse';
 
-type ICardProps = ICard;
-interface ICardState {
-  isShownModal: boolean;
-}
+export function Card({ snippet, id }: IVideoItem) {
+  const [isShownModal, setIsShownModal] = useState(false);
 
-export class Card extends Component<ICardProps, ICardState> {
-  constructor(props: ICardProps) {
-    super(props);
-    this.handlerOnPreviewClick = this.handlerOnPreviewClick.bind(this);
-    this.handlerModalClick = this.handlerModalClick.bind(this);
-    this.state = {
-      isShownModal: false,
-    };
-  }
-  handlerOnPreviewClick() {
-    this.setState({ isShownModal: true });
-  }
+  const handlerOnPreviewClick = () => {
+    setIsShownModal(true);
+  };
 
-  handlerModalClick() {
-    this.setState({ isShownModal: false });
-  }
+  const handlerModalClick = () => {
+    setIsShownModal(false);
+  };
 
-  render() {
-    const { title, server, id, secret } = this.props;
-    const { isShownModal } = this.state;
-
-    return (
-      <>
-        <div className="card" onClick={this.handlerOnPreviewClick}>
-          <img
-            className="card__img"
-            src={`https://live.staticflickr.com/${server}/${id}_${secret}_q.jpg`}
-            alt={title}
-          />
-        </div>
-        {isShownModal && (
-          <Modal closeModal={this.handlerModalClick}>
-            <>
-              <img
-                className="card-modal__img"
-                src={`https://live.staticflickr.com/${server}/${id}_${secret}_b.jpg`}
-                alt={title}
-              />
-              <span className="card-modal__title">{title}</span>
-            </>
-          </Modal>
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      <div className="card" onClick={handlerOnPreviewClick}>
+        <img className="card__img" src={snippet.thumbnails.high.url} alt={snippet.title} />
+      </div>
+      {isShownModal && (
+        <Modal closeModal={handlerModalClick}>
+          <>
+            <iframe
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${id.videoId}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <h3 className="h3 card-modal__title">{snippet.title}</h3>
+            <p className="p1 card-modal__title">{snippet.channelTitle}</p>
+            <p className="p1 card-modal__title">{snippet.description}</p>
+            <p className="p1 card-modal__title">
+              {snippet.publishTime.toString().split('T').at(0)?.replaceAll('-', ' ')}
+            </p>
+          </>
+        </Modal>
+      )}
+    </>
+  );
 }

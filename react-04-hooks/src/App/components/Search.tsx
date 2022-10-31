@@ -1,42 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useState } from 'react';
 
 interface ISearchProps {
-  value: string;
-  onApply: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  value?: string;
+  placeholder?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-interface ISearchState {
-  searchValue: string;
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export class Search extends Component<ISearchProps, ISearchState> {
-  constructor(props: ISearchProps) {
-    super(props);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.state = {
-      searchValue: this.props.value,
-    };
-  }
+export function Search({ value, onChange, onKeyDown, placeholder = 'Search...' }: ISearchProps) {
+  const [inputValue, setInputValue] = useState(value || '');
 
-  handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const elem = event.target as HTMLInputElement;
-    this.setState({ searchValue: elem.value });
-    this.props.onChange(event);
-  }
+    setInputValue(elem.value);
+    onChange(event);
+  };
 
-  render() {
-    const { onApply } = this.props;
-    const { searchValue } = this.state;
-    return (
-      <div className="search">
-        <input
-          type="search"
-          value={searchValue}
-          onKeyDown={onApply}
-          onChange={this.handleSearchChange}
-          placeholder="Search"
-        ></input>
-      </div>
-    );
-  }
+  return (
+    <input
+      className="search"
+      type="search"
+      value={inputValue}
+      onKeyDown={onKeyDown}
+      onChange={handleSearchChange}
+      placeholder={placeholder}
+    ></input>
+  );
 }

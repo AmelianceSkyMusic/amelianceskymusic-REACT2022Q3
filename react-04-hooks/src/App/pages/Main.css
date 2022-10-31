@@ -3,7 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 64px;
+  padding: 64px;
   max-width: 100%;
 }
 
@@ -12,7 +13,7 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  gap: 16px;
+  gap: 32px;
 }
 
 .search {

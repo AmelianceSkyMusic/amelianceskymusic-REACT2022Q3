@@ -1,15 +1,3 @@
-export interface ICard {
-  farm: number;
-  id: string;
-  isfamily: number;
-  isfriend: number;
-  ispublic: number;
-  owner: string;
-  secret: string;
-  server: string;
-  title: string;
-}
-
 export interface PageInfo {
   totalResults: number;
   resultsPerPage: number;
@@ -57,18 +45,29 @@ export interface Snippet {
   publishTime: Date;
 }
 
-export interface Item {
+export interface IVideoItem {
   kind: string;
   etag: string;
   id: Id;
   snippet: Snippet;
 }
 
-export interface RootObject {
+export interface IError {
+  code: number;
+  message: string;
+  errors: {
+    message: string;
+    domain: string;
+    reason: string;
+  }[];
+}
+
+export interface IYoutubeResponse {
   kind: string;
   etag: string;
   nextPageToken: string;
   regionCode: string;
   pageInfo: PageInfo;
-  items: Item[];
+  items: IVideoItem[];
+  error?: IError;
 }

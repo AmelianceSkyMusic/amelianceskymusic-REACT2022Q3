@@ -1,24 +1,27 @@
 import './Switcher.css';
 import React from 'react';
+import { FieldValues } from 'react-hook-form';
+import { FieldError } from 'react-hook-form/dist/types/errors';
 
-interface ISwitcherProps {
-  children?: string;
-  error?: string | null;
+interface IProps {
+  register: FieldValues;
+  errors: Record<string, FieldError> | undefined;
+  placeholder?: string;
+  children?: React.ReactNode;
   testId?: string;
-  name: string;
 }
 
-export const Switcher = React.forwardRef<HTMLInputElement, ISwitcherProps>((props, ref) => (
-  <label className="toggle">
-    <span className="toggle__label">{props.children}</span>
-    <span className="toggle__error input-error">{props.error}</span>
-    <input
-      className="toggle__checkbox switcher__input"
-      type="checkbox"
-      name={props.name}
-      ref={ref}
-      data-testid={props.testId}
-    ></input>
-    <div className="toggle__switch"></div>
-  </label>
-));
+export function Switcher({ register, errors, children, testId }: IProps) {
+  return (
+    <div className="switcher">
+      <label className="switcher__container">
+        <input type="checkbox" className="switcher__checkbox" {...register} data-testid={testId} />
+        <div className="switcher__element"></div>
+        <span className="switcher__label">{children}</span>
+      </label>
+      <p className="text-input__error input-error">
+        {(errors && errors[register.name] && errors[register.name].message) || ''}
+      </p>
+    </div>
+  );
+}

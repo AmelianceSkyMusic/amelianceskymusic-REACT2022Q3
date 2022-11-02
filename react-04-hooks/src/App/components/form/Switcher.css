@@ -1,9 +1,9 @@
-.toggle {
+.switcher__container {
   cursor: pointer;
   display: inline-block;
 }
 
-.toggle__switch {
+.switcher__element {
   display: inline-block;
   background: #ccc;
   border-radius: 16px;
@@ -12,46 +12,40 @@
   position: relative;
   vertical-align: middle;
   transition: background 0.25s;
-
-  text-align: center;
-  width: 320px;
-  border-radius: 50%;
-  box-shadow: 8px 8px aquamarine;
-  border: 2px solid aquamarine;
 }
-.toggle__switch:before,
-.toggle__switch:after {
+.switcher__element:before,
+.switcher__element:after {
   content: "";
 }
-.toggle__switch:before {
+.switcher__element:before {
   display: block;
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
-  width: 50%;
+  width: 24px;
   height: 24px;
   position: absolute;
   top: 4px;
-  left: 50%;
+  left: 4px;
   transition: left 0.25s;
 }
-.toggle:hover .toggle__switch:before {
+.switcher__container:hover .switcher__element:before {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
-.toggle__checkbox:checked + .toggle__switch {
+.switcher__checkbox:checked + .switcher__element {
   background: #56c080;
 }
-.toggle__checkbox:checked + .toggle__switch:before {
+.switcher__checkbox:checked + .switcher__element:before {
   left: 30px;
 }
 
-.toggle__checkbox {
+.switcher__checkbox {
   position: absolute;
   visibility: hidden;
 }
 
-.toggle__label {
+.switcher__label {
   margin-left: 5px;
   position: relative;
   top: 2px;

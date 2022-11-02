@@ -1,28 +1,23 @@
-import './Dropdown.css';
-import React, { Component } from 'react';
+import React from 'react';
+import { FieldValues } from 'react-hook-form';
+import { FieldError } from 'react-hook-form/dist/types/errors';
 
-interface IDropdownProps {
-  children?: string;
+interface IProps {
   options: string[];
-  error?: string | null;
-  title?: string;
+  register: FieldValues;
+  errors: Record<string, FieldError> | undefined;
+  placeholder?: string;
+  children?: React.ReactNode;
   testId?: string;
-  name: string;
 }
 
-export class Dropdown extends Component<IDropdownProps> {
-  render() {
-    const { children, options, title, error, name, testId } = this.props;
-    return (
-      <label className="dropdown">
+export function Dropdown({ options, register, errors, children, testId }: IProps) {
+  return (
+    <div className="dropdown">
+      <label className="dropdown__label">
         {children}
-        <span className="dropdown__error input-error">{error}</span>
-        <select className="dropdown__select" name={name} defaultValue={title} data-testid={testId}>
-          {title && (
-            <option className="dropdown__option" value={title} disabled>
-              {title}
-            </option>
-          )}
+        <select className="dropdown__select" {...register} data-testid={testId}>
+          <option className="dropdown__option"> </option>
           {options.map((optionValue) => (
             <option className="dropdown__option" key={optionValue} value={optionValue}>
               {optionValue}
@@ -30,6 +25,9 @@ export class Dropdown extends Component<IDropdownProps> {
           ))}
         </select>
       </label>
-    );
-  }
+      <p className="dropdown__error input-error">
+        {(errors && errors[register.name] && errors[register.name].message) || ''}
+      </p>
+    </div>
+  );
 }

@@ -1,21 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { FieldValues } from 'react-hook-form';
+import { FieldError } from 'react-hook-form/dist/types/errors';
 
-interface IDateInputProps {
-  children?: string;
-  error?: string | null;
+interface IProps {
+  register: FieldValues;
+  errors: Record<string, FieldError> | undefined;
+  children?: React.ReactNode;
   testId?: string;
-  name: string;
 }
 
-export class DateInput extends Component<IDateInputProps> {
-  render() {
-    const { children, name, error, testId } = this.props;
-    return (
-      <label className="date-input">
+export function DateInput({ register, errors, children, testId }: IProps) {
+  return (
+    <div className="date-input">
+      <label className="date-input__label">
         {children}
-        <span className="date-input__error input-error">{error}</span>
-        <input type="date" className="date-input__input" name={name} data-testid={testId}></input>
+        <input type="date" className="date-input__input" {...register} data-testid={testId}></input>
       </label>
-    );
-  }
+      <p className="date-input__error input-error">
+        {(errors && errors[register.name] && errors[register.name].message) || ''}
+      </p>
+    </div>
+  );
 }

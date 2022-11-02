@@ -1,37 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { FieldValues } from 'react-hook-form';
+import { FieldError } from 'react-hook-form/dist/types/errors';
 
-interface ITextInputProps {
-  children?: string;
+interface IProps {
+  register: FieldValues;
+  errors: Record<string, FieldError> | undefined;
   placeholder?: string;
-  required?: boolean;
-  pattern?: string;
-  minLength?: number;
-  maxLength?: number;
-  error?: string | null;
+  children?: React.ReactNode;
   testId?: string;
-  name: string;
 }
 
-export class TextInput extends Component<ITextInputProps> {
-  render() {
-    const { children, name, placeholder, required, error, pattern, minLength, maxLength, testId } =
-      this.props;
-    return (
-      <label className="text-input">
+export function TextInput({ register, errors, children, placeholder, testId }: IProps) {
+  return (
+    <div className="text-input">
+      <label className="text-input__label">
         {children}
-        <span className="text-input__error input-error">{error}</span>
         <input
-          className="text-input__input"
           type="input"
-          name={name}
+          className="text-input__input"
+          {...register}
           placeholder={placeholder}
-          required={required}
-          pattern={pattern}
-          minLength={minLength}
-          maxLength={maxLength}
           data-testid={testId}
         ></input>
       </label>
-    );
-  }
+      <p className="text-input__error input-error">
+        {(errors && errors[register.name] && errors[register.name].message) || ''}
+      </p>
+    </div>
+  );
 }

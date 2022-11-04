@@ -91,12 +91,10 @@ export function Main() {
       if (prevSearchValue !== nextSearchValue) {
         //* do fetch if search value is not empty
         if (nextSearchValue) {
-          console.log('do fetch');
           setIsLoading(true);
           setIsSearchApplied(true);
           getFetchedData(nextSearchValue);
         } else {
-          console.log('clear');
           setCards([]);
           setIsSearchApplied(false);
         }

@@ -16,7 +16,6 @@ export async function get(search: string, nextPage?: string): Promise<IYoutubeRe
   URLParams.append('maxResult', '10');
   URLParams.append('key', API_KEY);
   const url = `${baseURL}?${URLParams}`;
-  console.log(url);
 
   try {
     const response = await fetch(url);

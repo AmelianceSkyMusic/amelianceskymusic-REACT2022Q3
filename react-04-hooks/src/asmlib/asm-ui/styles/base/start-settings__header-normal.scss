@@ -36,6 +36,7 @@ body {
 		// footer to bottom
 		display: grid;
 		grid-template-rows: auto 1fr auto;
+		grid-template-columns: 1fr;
 		min-height: 100vh;
 		margin: 0;
 	}

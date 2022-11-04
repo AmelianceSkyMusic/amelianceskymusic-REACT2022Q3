@@ -2,6 +2,8 @@
 
 .button,
 .button-sm {
+	mix-blend-mode: multiply;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -66,7 +68,7 @@
 .button-sm.secondary {
 	color: var(--color__button-secondary);
 	background: none;
-	border: 2px solid var(--border__button-secondary);
+	border: var(--border__button) solid var(--border__button-secondary);
 
 	& .icon.left,
 	& .icon-sm.left,
@@ -78,7 +80,7 @@
 	@media (hover: hover) {
 		&:hover {
 			color: var(--color__button-secondary_hover);
-			border: 2px solid var(--border__button-secondary_hover);
+			border: var(--border__button) solid var(--border__button-secondary_hover);
 			& .icon.left,
 			& .icon-sm.left,
 			& .icon.right,
@@ -89,7 +91,7 @@
 	}
 	&:active {
 		color: var(--color__button-secondary_active);
-		border: 2px solid var(--border__button-secondary_active);
+		border: var(--border__button) solid var(--border__button-secondary_active);
 		& .icon.left,
 		& .icon-sm.left,
 		& .icon.right,

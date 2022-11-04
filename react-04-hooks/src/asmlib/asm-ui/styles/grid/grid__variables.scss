@@ -5,7 +5,7 @@
 	--col-gap: var(--screen--col-gap);
 	--col-outer: var(--screen--col-outer);
 
-	--container-width: calc(--screen--container__width + (var(--col-outer) * 2));
+	--container-width: calc(var(--screen--container__width) + (var(--col-outer) * 2));
 
 	@media (max-width: $screen-xx) {
 		--gap: var(--screen--gap__xx);

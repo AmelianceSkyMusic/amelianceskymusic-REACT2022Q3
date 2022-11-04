@@ -9,14 +9,15 @@
 // >                              GRID                              <
 // >----------------------------------------------------------------<
 .container {
+	width: 100%;
 	max-width: var(--container-width);
 	display: flex;
 	max-height: 100%;
 	margin: 0 auto;
 	padding: 0 var(--col-outer);
-	@media (max-width: 1024px) {
-		width: 100%;
-	}
+	// @media (max-width: $screen-xl) {
+	// 	width: 100%;
+	// }
 }
 
 .row {

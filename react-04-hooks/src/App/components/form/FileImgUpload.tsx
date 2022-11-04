@@ -1,3 +1,4 @@
+import './FileImgUpload.scss';
 import React, { useEffect, useState } from 'react';
 import { FieldError, FieldValues } from 'react-hook-form';
 
@@ -32,8 +33,8 @@ export function FileImgUpload({
 
   return (
     <div className="file-img-upload">
-      <label className="file-img-upload__label">
-        {children}
+      <span className="h3 file-img-upload__title">{children}</span>
+      <label className="p1 file-img-upload__container">
         <input
           type="file"
           className="file-img-upload__input"
@@ -42,9 +43,9 @@ export function FileImgUpload({
           accept={accept || ''}
           data-testid={testId}
         />
+        {image && <img className="file-img-upload__img-preview" src={image} alt={image} />}
       </label>
-      {image && <img className="file-img-upload__img-preview" src={image} alt={image} />}
-      <p className="file-img-upload__error input-error">
+      <p className="p2 file-img-upload__error input-error">
         {(errors && errors[register.name] && errors[register.name].message) || ''}
       </p>
     </div>

@@ -1,4 +1,4 @@
-import styles from './FormCard.module.css';
+import './FormCard.scss';
 import React from 'react';
 import { IFormCardData } from './IFormCardData';
 
@@ -7,14 +7,24 @@ interface IFormCard {
 }
 
 export function FormCard({ card }: IFormCard) {
-  const { form_card, form_card__image } = styles;
   return (
-    <div className={form_card} data-testid="card">
-      <h2 className="h2">Your Name: {card.firstName}</h2>
-      <p className="p1">Your Birthday: {card.birthday}</p>
-      <p className="p1">Favorite framework: {card.framework}</p>
-      <p className="p1">Your sex: {card.sex}</p>
-      {card.avatar && <img className={form_card__image} src={card.avatar} alt={card.avatar} />}
+    <div className="form-card col-3" data-testid="card">
+      {card.avatar && <img className="form-card__image" src={card.avatar} alt={card.avatar} />}
+      <h2 className="h2">
+        <b>{card.firstName}</b>
+      </h2>
+      <p className="p1">
+        <b>{card.good && 'Good Person'}</b>
+      </p>
+      <p className="p1">
+        Birthday: <b>{card.birthday}</b>
+      </p>
+      <p className="p1">
+        Framework: <b>{card.framework}</b>
+      </p>
+      <p className="p1">
+        Sex: <b>{card.sex}</b>
+      </p>
     </div>
   );
 }

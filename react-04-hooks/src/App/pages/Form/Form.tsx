@@ -1,4 +1,5 @@
-import './Form.css';
+import './FormCard.scss';
+import './Form.scss';
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TextInput } from 'App/components/form/TextInput';
@@ -10,14 +11,14 @@ import { Switcher } from 'App/components/form/Switcher';
 import { RadioButtons } from 'App/components/form/RadioButtons';
 import { IFormCardData } from './IFormCardData';
 import { FormCard } from './FormCard';
-
+import asm from 'asmlib/asm-scripts';
 interface IFormInputs {
   firstName: string;
   birthday: string;
   framework: string;
-  agree: boolean;
+  good: boolean;
   showSex: boolean;
-  sex: boolean;
+  sex: string;
   avatar: FileList;
 }
 
@@ -29,23 +30,38 @@ export function Form() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isValid },
-  } = useForm<IFormInputs>({ mode: 'onSubmit' });
+    formState: { errors, isDirty },
+  } = useForm<IFormInputs>({
+    mode: 'onSubmit',
+    defaultValues: {
+      firstName: '',
+      birthday: '',
+      framework: '',
+      good: false,
+      showSex: false,
+      sex: undefined,
+      avatar: undefined,
+    },
+  });
+
+  const isValidFixed = asm.isObjectEmpty(errors); //* fix isValid default has false
 
   const firstName = register('firstName', {
     required: 'Field is so empty! Please, type more characters',
-    minLength: { value: 2, message: 'The minimum password length must be 2 characters' },
+    minLength: { value: 2, message: 'Min length are 2 characters' },
     pattern: { value: /^[A-Za-z]+$/i, message: 'Please, use only A-Z a-z characters!' },
   });
 
   const birthday = register('birthday', { required: 'Please, select a date' });
   const framework = register('framework', { required: 'Please, chose a course' });
-  const agree = register('agree', { required: 'Please, check checkbox' });
+  const good = register('good', { required: 'Please, check checkbox' });
   const showSex = register('showSex', { required: 'Please, chose a sex' });
   const sex = register('sex', { required: 'Please, chose a sex' });
   const avatar = register('avatar', { required: 'Please, select an image' });
 
   const showSexWatch = watch('showSex');
+
+  console.log(watch());
 
   const handleReset = () => {
     reset();
@@ -53,14 +69,15 @@ export function Form() {
 
   const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) => {
     const imageObject = data.avatar[0];
+
     const image = URL.createObjectURL(imageObject);
     setCards((prev) => [
       ...prev,
       {
         firstName: data.firstName,
-        birthday: data.firstName,
-        framework: data.framework,
-        agree: data.agree,
+        birthday: data.birthday.replaceAll('-', ' '),
+        framework: data.framework.trim(),
+        good: data.good,
         sex: data.sex,
         avatar: image,
         id: prev.length + 1,
@@ -69,56 +86,68 @@ export function Form() {
     handleReset();
   };
 
-  // const isEmpty = Object.keys(errors).length > 0 ? true : false;
-
   return (
-    <section className="form-page">
-      <h2>Form</h2>
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <TextInput register={firstName} errors={errors} testId="name-text-input">
-          Your Name*:
-        </TextInput>
-        <DateInput register={birthday} errors={errors} testId="name-text-input">
-          Your Birthday*:
-        </DateInput>
-        <Dropdown
-          options={['React', 'Angular', 'Vue']}
-          register={framework}
-          errors={errors}
-          testId="name-text-input"
-        >
-          Your Favorite Framework*:
-        </Dropdown>
-        <Checkbox register={agree} errors={errors} testId="name-text-input">
-          I am a good person*
-        </Checkbox>
-        <Switcher register={showSex} errors={errors} testId="name-text-input">
-          Show sex*:
-        </Switcher>
-        {showSexWatch && (
-          <RadioButtons
-            values={['Male', 'Female']}
-            register={sex}
+    <main className="form-page main">
+      <div className="container">
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <TextInput register={firstName} errors={errors} testId="name-text-input">
+            Your Name*:
+          </TextInput>
+          <DateInput register={birthday} errors={errors} testId="name-text-input">
+            Your Birthday*:
+          </DateInput>
+          <Dropdown
+            options={['React', 'React ', 'React  ', 'React   ', 'React    ']}
+            register={framework}
             errors={errors}
             testId="name-text-input"
           >
-            Chose your sex*:
-          </RadioButtons>
-        )}
-        <FileImgUpload
-          watch={watch}
-          register={avatar}
-          errors={errors}
-          accept=".jpg, .jpeg, .png"
-          testId="image-file-input"
-        >
-          Select your avatar:*
-        </FileImgUpload>
+            Your Favorite Framework*:
+          </Dropdown>
+          <Checkbox
+            register={good}
+            errors={errors}
+            label="I am a good person"
+            testId="name-text-input"
+          >
+            Your kind*:
+          </Checkbox>
+          <Switcher register={showSex} errors={errors} label="Show" testId="name-text-input">
+            Show additional input*:
+          </Switcher>
+          {showSexWatch && (
+            <RadioButtons
+              labels={['Male', 'Female']}
+              register={sex}
+              errors={errors}
+              testId="name-text-input"
+            >
+              Chose your sex*:
+            </RadioButtons>
+          )}
+          <FileImgUpload
+            watch={watch}
+            register={avatar}
+            errors={errors}
+            accept=".jpg, .jpeg, .png"
+            testId="image-file-input"
+          >
+            Select your avatar:*
+          </FileImgUpload>
+          <div className="form__buttons">
+            <button className="button secondary" onClick={handleReset} disabled={!isDirty}>
+              Reset
+            </button>
+            <input className="button" type="submit" disabled={!isDirty || !isValidFixed} />
+          </div>
+        </form>
 
-        <input type="submit" disabled={isValid} />
-      </form>
-      <button onClick={handleReset}>Reset</button>
-      <div>{cards.length > 0 && cards.map((card) => <FormCard key={card.id} card={card} />)}</div>
-    </section>
+        {cards.length > 0 && (
+          <section className="form-cards row">
+            {cards.length > 0 && cards.map((card) => <FormCard key={card.id} card={card} />)}
+          </section>
+        )}
+      </div>
+    </main>
   );
 }

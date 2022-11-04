@@ -1,0 +1,23 @@
+.form-page {
+  .container {
+    gap: 64px;
+    align-items: center;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 300px;
+
+  &__buttons {
+    display: flex;
+    justify-self: start;
+    gap: var(--gap);
+  }
+}
+
+.form-cards {
+  row-gap: var(--gap);
+}

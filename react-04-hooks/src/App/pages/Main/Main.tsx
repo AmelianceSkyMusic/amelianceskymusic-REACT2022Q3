@@ -1,11 +1,11 @@
+import './Main.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import api from 'App/api';
-import { Card } from 'App/components/Card';
 import { IVideoItem } from 'App/types/IYoutubeResponse';
 import { Search } from 'App/components/Search';
 import { Loader } from 'App/components/Loader';
-import './Main.css';
-import { getScrollDIrection } from 'asmlib/asm-scripts/getScrollDirection';
+import asm from 'asmlib/asm-scripts';
+import { MainCard } from './MainCard';
 
 export function Main() {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +54,6 @@ export function Main() {
       }
 
       setNextPage(response.nextPageToken);
-      setIsSearchApplied(true);
       setIsScrollLoading(false);
     } else if (response && response.error) {
       setIsError(true);
@@ -69,11 +68,13 @@ export function Main() {
       setIsError(true);
     }
 
+    setIsSearchApplied(true);
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (searchValueRef.current) {
+      setIsSearchApplied(true);
       getFetchedData(searchValueRef.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,11 +93,12 @@ export function Main() {
         if (nextSearchValue) {
           console.log('do fetch');
           setIsLoading(true);
+          setIsSearchApplied(true);
           getFetchedData(nextSearchValue);
         } else {
           console.log('clear');
           setCards([]);
-          setIsSearchApplied(true);
+          setIsSearchApplied(false);
         }
       }
     }
@@ -108,7 +110,7 @@ export function Main() {
     const scrollTop = target.documentElement.scrollTop;
     const innerHeight = window.innerHeight;
 
-    const scrollDirection = getScrollDIrection();
+    const scrollDirection = asm.getScrollDirection();
     if (
       !isLastPageRef.current &&
       !isScrollLoadingRef.current &&
@@ -135,16 +137,21 @@ export function Main() {
   };
 
   return (
-    <main className="main-page">
-      <h1>ПОШУКАЙ</h1>
-      <Search value={searchValue} onChange={handleSearchChange} onKeyDown={handlerSearchApply} />
-      <section className="cards">
-        {isError && <h3 className="h3 error">{errorMessage || 'Sorry! Something went wrong!'}</h3>}
-        {isLoading
-          ? isSearchApplied && <Loader />
-          : cards?.length > 0 && cards.map((card, i) => <Card key={`${card.id}-${i}`} {...card} />)}
-      </section>
-      {cards?.length > 0 && isScrollLoading && !isLastPage && <h2>LOADING...</h2>}
+    <main className="main-page main">
+      <div className="container">
+        <h1 className="h1">ПОШУКАЙ</h1>
+        <Search value={searchValue} onChange={handleSearchChange} onKeyDown={handlerSearchApply} />
+        <section className="cards">
+          {isError && (
+            <h3 className="h3 error">{errorMessage || 'Sorry! Something went wrong!'}</h3>
+          )}
+          {isLoading
+            ? isSearchApplied && <Loader />
+            : cards?.length > 0 &&
+              cards.map((card, i) => <MainCard key={`${card.id}-${i}`} {...card} />)}
+        </section>
+        {cards?.length > 0 && isScrollLoading && !isLastPage && <h3 className="h3">LOADING...</h3>}
+      </div>
     </main>
   );
 }

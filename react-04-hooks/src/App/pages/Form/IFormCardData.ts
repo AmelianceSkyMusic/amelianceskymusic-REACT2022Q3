@@ -2,7 +2,8 @@ export interface IFormCardData {
   firstName: string;
   birthday: string;
   framework: string;
-  sex: boolean;
+  good: boolean;
+  sex: string;
   avatar: string;
   id: number;
 }

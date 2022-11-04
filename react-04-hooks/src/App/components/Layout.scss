@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap);
+  padding-top: var(--gap);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap);
+  padding-bottom: var(--gap);
+}
+
+.active {
+  font-weight: bold;
+}

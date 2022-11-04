@@ -7,4 +7,4 @@ function wrapper() {
   };
 }
 
-export const getScrollDIrection = wrapper();
+export const getScrollDirection = wrapper();

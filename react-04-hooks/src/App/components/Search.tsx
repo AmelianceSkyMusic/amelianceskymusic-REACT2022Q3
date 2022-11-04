@@ -1,3 +1,4 @@
+import './Search.scss';
 import React from 'react';
 import { useState } from 'react';
 
@@ -19,7 +20,7 @@ export function Search({ value, onChange, onKeyDown, placeholder = 'Search...' }
 
   return (
     <input
-      className="search"
+      className="p1 search"
       type="search"
       value={inputValue}
       onKeyDown={onKeyDown}

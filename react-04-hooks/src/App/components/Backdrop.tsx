@@ -3,9 +3,8 @@ import './Backdrop.css';
 
 interface IBackdropProps {
   onClick?: () => void;
-  ref: React.RefObject<HTMLDivElement>;
 }
 
-export const Backdrop = React.forwardRef<HTMLDivElement, IBackdropProps>((props, ref) => (
-  <div className="backdrop" onClick={props.onClick} ref={ref} data-testid="backdrop" />
-));
+export function Backdrop({ onClick }: IBackdropProps) {
+  return <div className="backdrop" onClick={onClick} data-testid="backdrop" />;
+}

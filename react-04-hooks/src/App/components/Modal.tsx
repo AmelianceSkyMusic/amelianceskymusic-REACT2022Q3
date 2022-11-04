@@ -1,52 +1,41 @@
-import React, { Component } from 'react';
+import './Modal.scss';
+import React, { useEffect, useState } from 'react';
 import { Backdrop } from './Backdrop';
 import { Portal } from './Portal';
-import './Modal.css';
+import asm from 'asmlib/asm-scripts';
 
 interface IModalProps {
   children: React.ReactElement;
+  className?: string;
   closeModal: () => void;
 }
 
-// interface IStateProps {
-//   isShown: boolean;
-// }
+export function Modal({ children, className, closeModal }: IModalProps) {
+  const [show, setShow] = useState('show');
 
-export class Modal extends Component<IModalProps> {
-  modalRef: React.RefObject<HTMLDivElement>;
-  backdropRef: React.RefObject<HTMLDivElement>;
-  constructor(props: IModalProps) {
-    super(props);
-    this.modalRef = React.createRef();
-    this.backdropRef = React.createRef();
-    this.backdropClickHandler = this.backdropClickHandler.bind(this);
-  }
+  const backdropClickHandler = () => {
+    setShow('');
+  };
 
-  backdropClickHandler() {
-    this.modalRef.current?.classList.remove('show');
-    this.modalRef.current?.addEventListener('animationend', () => {
-      this.props.closeModal();
+  const handleAnimationend = () => {
+    if (show !== 'show') {
+      closeModal();
       document.body.style.overflow = 'visible';
-    });
-  }
+    }
+  };
 
-  componentDidMount() {
-    this.modalRef.current?.classList.add('show');
+  useEffect(() => {
     document.body.style.overflow = 'hidden';
-  }
+  }, []);
 
-  render() {
-    return (
-      <Portal>
-        <div className="modal" ref={this.modalRef}>
-          <Backdrop
-            onClick={this.backdropClickHandler}
-            ref={this.backdropRef}
-            data-testid="backdrop"
-          />
-          <div className="modal__content">{this.props.children}</div>
-        </div>
-      </Portal>
-    );
-  }
+  const modalClass = asm.joinClasses('modal', className, show);
+
+  return (
+    <Portal>
+      <div className={modalClass} onAnimationEnd={handleAnimationend}>
+        <Backdrop onClick={backdropClickHandler} data-testid="backdrop" />
+        <div className="modal__content">{children}</div>
+      </div>
+    </Portal>
+  );
 }

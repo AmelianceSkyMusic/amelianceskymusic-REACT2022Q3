@@ -1,4 +1,4 @@
-import { getRandomNumber } from 'asmlib/asm-scripts';
+import asm from 'asmlib/asm-scripts';
 import { ICard } from './types';
 
 export function getCardDataFromForm(form: HTMLFormElement): ICard {
@@ -15,7 +15,7 @@ export function getCardDataFromForm(form: HTMLFormElement): ICard {
     imageObject && imageObject instanceof File && imageObject.name
       ? URL.createObjectURL(imageObject)
       : null;
-  const id = getRandomNumber(100_000_000_000, 999_999_999_999).toString();
+  const id = asm.getRandomNumber(100_000_000_000, 999_999_999_999).toString();
 
   const getCardDataFromForm = {
     name,

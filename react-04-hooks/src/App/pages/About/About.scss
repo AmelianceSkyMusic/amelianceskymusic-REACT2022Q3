@@ -1,0 +1,22 @@
+.about-page {
+   .container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+   .arrow {
+      animation: arrow-animation 0.4s ease-in-out infinite alternate;
+      position: absolute;
+      bottom: 0;
+   }
+
+   @keyframes arrow-animation {
+      0% {
+         transform: translateY(0%);
+      }
+      100% {
+         transform: translateY(50%);
+      }
+   }
+}

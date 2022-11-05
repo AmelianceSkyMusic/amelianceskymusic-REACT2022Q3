@@ -7,10 +7,10 @@ import asm from 'asmlib/asm-scripts';
 interface IModalProps {
   children: React.ReactElement;
   className?: string;
-  closeModal: () => void;
+  onClose: () => void;
 }
 
-export function Modal({ children, className, closeModal }: IModalProps) {
+export function Modal({ children, className, onClose }: IModalProps) {
   const [show, setShow] = useState('show');
 
   const backdropClickHandler = () => {
@@ -19,7 +19,7 @@ export function Modal({ children, className, closeModal }: IModalProps) {
 
   const handleAnimationend = () => {
     if (show !== 'show') {
-      closeModal();
+      onClose();
       document.body.style.overflow = 'visible';
     }
   };

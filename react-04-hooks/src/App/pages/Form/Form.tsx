@@ -61,8 +61,6 @@ export function Form() {
 
   const showSexWatch = watch('showSex');
 
-  console.log(watch());
-
   const handleReset = () => {
     reset();
   };
@@ -89,39 +87,29 @@ export function Form() {
   return (
     <main className="form-page main">
       <div className="container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <TextInput register={firstName} errors={errors} testId="name-text-input">
+        <form className="form" onSubmit={handleSubmit(onSubmit)} data-testid="form">
+          <TextInput register={firstName} errors={errors} testId="first-name">
             Your Name*:
           </TextInput>
-          <DateInput register={birthday} errors={errors} testId="name-text-input">
+          <DateInput register={birthday} errors={errors} testId="birthday">
             Your Birthday*:
           </DateInput>
           <Dropdown
             options={['React', 'React ', 'React  ', 'React   ', 'React    ']}
             register={framework}
             errors={errors}
-            testId="name-text-input"
+            testId="framework"
           >
             Your Favorite Framework*:
           </Dropdown>
-          <Checkbox
-            register={good}
-            errors={errors}
-            label="I am a good person"
-            testId="name-text-input"
-          >
+          <Checkbox register={good} errors={errors} label="I am a good person" testId="good">
             Your kind*:
           </Checkbox>
-          <Switcher register={showSex} errors={errors} label="Show" testId="name-text-input">
+          <Switcher register={showSex} errors={errors} label="Show" testId="show-sex">
             Show additional input*:
           </Switcher>
           {showSexWatch && (
-            <RadioButtons
-              labels={['Male', 'Female']}
-              register={sex}
-              errors={errors}
-              testId="name-text-input"
-            >
+            <RadioButtons labels={['Male', 'Female']} register={sex} errors={errors} testId="sex">
               Chose your sex*:
             </RadioButtons>
           )}
@@ -130,7 +118,7 @@ export function Form() {
             register={avatar}
             errors={errors}
             accept=".jpg, .jpeg, .png"
-            testId="image-file-input"
+            testId="avatar"
           >
             Select your avatar:*
           </FileImgUpload>
@@ -138,7 +126,12 @@ export function Form() {
             <button className="button secondary" onClick={handleReset} disabled={!isDirty}>
               Reset
             </button>
-            <input className="button" type="submit" disabled={!isDirty || !isValidFixed} />
+            <input
+              className="button"
+              type="submit"
+              disabled={!isDirty || !isValidFixed}
+              value="Create Card"
+            />
           </div>
         </form>
 

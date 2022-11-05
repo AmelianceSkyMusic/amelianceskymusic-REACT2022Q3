@@ -7,7 +7,7 @@ const handlerModalClick = jest.fn();
 describe('Modal component', () => {
   it('should render component', () => {
     render(
-      <Modal closeModal={handlerModalClick}>
+      <Modal onClose={handlerModalClick}>
         <span>test</span>
       </Modal>
     );

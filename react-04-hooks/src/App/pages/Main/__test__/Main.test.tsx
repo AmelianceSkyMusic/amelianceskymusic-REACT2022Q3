@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Main } from '../Main';
-import { responseMock } from '__mocks__/responseMock';
+import { responseMock } from '../../../../__mocks__/responseMock';
 
 class LocalStorage {
   store: { [key: string]: string };
@@ -43,9 +43,9 @@ describe('Local Storage', () => {
   it('should set and get data to Local Storage', async () => {
     const { rerender, unmount } = render(<Main />);
     expect(screen.queryByRole('img')).toBeNull();
-    userEvent.type(screen.getByPlaceholderText('Search'), 'Cats{enter}'); // do fetch ¯\_(ツ)_/¯ but should not do request to server
+    userEvent.type(screen.getByPlaceholderText(/Search/i), 'Ameliance SkyMusic{enter}'); // do fetch ¯\_(ツ)_/¯ but should not do request to server
     rerender(<Main />);
-    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Cats');
+    expect(screen.getByPlaceholderText(/Search/i)).toHaveDisplayValue('Ameliance SkyMusic');
     unmount();
     cleanup();
   });
@@ -66,8 +66,8 @@ describe('Search', () => {
   it('should search typing work', async () => {
     const { unmount } = render(<Main />);
     expect(screen.queryByRole('img')).toBeNull();
-    userEvent.type(screen.getByPlaceholderText('Search'), 'Cars');
-    expect(screen.getByPlaceholderText('Search')).toHaveDisplayValue('Cars');
+    userEvent.type(screen.getByPlaceholderText(/Search/i), 'Ameliance SkyMusic');
+    expect(screen.getByPlaceholderText(/Search/i)).toHaveDisplayValue('Ameliance SkyMusic');
     unmount();
     cleanup();
   });

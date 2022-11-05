@@ -5,27 +5,25 @@ export interface PageInfo {
 
 export interface Id {
   kind: string;
-  channelId: string;
   videoId: string;
-  playlistId: string;
 }
 
 export interface Default {
   url: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }
 
 export interface Medium {
   url: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }
 
 export interface High {
   url: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }
 
 export interface Thumbnails {
@@ -35,14 +33,14 @@ export interface Thumbnails {
 }
 
 export interface Snippet {
-  publishedAt: Date;
+  publishedAt: string;
   channelId: string;
   title: string;
   description: string;
   thumbnails: Thumbnails;
   channelTitle: string;
   liveBroadcastContent: string;
-  publishTime: Date;
+  publishTime: string;
 }
 
 export interface IVideoItem {
@@ -61,7 +59,6 @@ export interface IError {
     reason: string;
   }[];
 }
-
 export interface IYoutubeResponse {
   kind: string;
   etag: string;

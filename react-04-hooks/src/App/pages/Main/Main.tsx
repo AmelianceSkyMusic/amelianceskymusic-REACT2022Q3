@@ -36,6 +36,7 @@ export function Main() {
 
   const getFetchedData = async (searchValue: string, nextPageArg?: string) => {
     const response = await api.google.youtube.get(searchValue, nextPageArg);
+
     if (response && !response.error) {
       if (nextPageArg) {
         setCards((prevCards) => [...prevCards, ...response.items]);

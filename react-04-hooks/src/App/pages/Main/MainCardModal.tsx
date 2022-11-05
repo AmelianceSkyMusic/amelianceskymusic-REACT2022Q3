@@ -22,15 +22,17 @@ export function MainCardModal({
   return (
     <Modal className="main-card-modal" onClose={onClose}>
       <>
-        <iframe
-          width="560"
-          height="315"
-          src={`https://www.youtube.com/embed/${videoId}`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <div className="main-card-modal__video">
+          <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
         <div className="main-card-modal__info">
           <h3 className="h3 inverted main-card-modal__title">{title}</h3>
           <p className="p1 inverted main-card-modal__title">{channelTitle}</p>

@@ -4,7 +4,6 @@ import api from 'App/api';
 import { IVideoItem } from 'App/types/IYoutubeResponse';
 import { Search } from 'App/components/Search';
 import { Loader } from 'App/components/Loader';
-import asm from 'asmlib/asm-scripts';
 import { MainCard } from './MainCard';
 import { useMainPageContext } from 'App/store/MainPageContext';
 
@@ -17,25 +16,8 @@ export function Main() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [cards, setCards] = useState<IVideoItem[]>([]);
 
-  const [cardsCount, setCardsCount] = useState(0);
-  const cardsCountRef = useRef<number>();
-  cardsCountRef.current = cardsCount;
-
-  const [isLastPage, setIsLastPage] = useState(false);
-  const isLastPageRef = useRef<boolean>();
-  isLastPageRef.current = isLastPage;
-
-  const [nextPage, setNextPage] = useState<string | undefined>();
-  const nextPageRef = useRef<string | undefined>();
-  nextPageRef.current = nextPage;
-
-  const [isScrollLoading, setIsScrollLoading] = useState(false);
-  const isScrollLoadingRef = useRef<boolean>();
-  isScrollLoadingRef.current = isScrollLoading;
-
   const [searchValue, setSearchValue] = useState(localStorage.getItem('searchValue') || '');
-  const searchValueRef = useRef<string>();
-  searchValueRef.current = searchValue;
+
   const [isSearchApplied, setIsSearchApplied] = useState(false);
 
   const getFetchedData = async (searchValue: string, nextPageArg?: string) => {
@@ -47,19 +29,6 @@ export function Main() {
       } else {
         setCards(response.items);
       }
-
-      const currentCardsCount = (cardsCountRef.current as number) + response.items.length;
-      const totalCardsCount = response.pageInfo.totalResults;
-      setCardsCount((prevCardsCount) => prevCardsCount + response.items.length);
-
-      if (currentCardsCount < totalCardsCount) {
-        setIsLastPage(false);
-      } else {
-        setIsLastPage(true);
-      }
-
-      setNextPage(response.nextPageToken);
-      setIsScrollLoading(false);
     } else if (response && response.error) {
       setIsError(true);
       if (response.error.code === 403) {
@@ -78,10 +47,9 @@ export function Main() {
   };
 
   useEffect(() => {
-    state.setSearchValue('zim');
-    if (searchValueRef.current) {
+    if (state) {
       setIsSearchApplied(true);
-      getFetchedData(searchValueRef.current);
+      getFetchedData(searchValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -108,34 +76,6 @@ export function Main() {
     }
   };
 
-  const scrollHandler = (event: Event) => {
-    const target = event?.target as Document;
-    const scrollHeight = target.documentElement.scrollHeight;
-    const scrollTop = target.documentElement.scrollTop;
-    const innerHeight = window.innerHeight;
-
-    const scrollDirection = asm.getScrollDirection();
-    if (
-      !isLastPageRef.current &&
-      !isScrollLoadingRef.current &&
-      scrollDirection === 'DOWN' &&
-      scrollHeight - (scrollTop + innerHeight) < 100
-    ) {
-      setIsScrollLoading(true);
-      if (searchValueRef.current) {
-        getFetchedData(searchValueRef.current, nextPageRef.current);
-      }
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('scroll', scrollHandler);
-    return function cleanup() {
-      document.removeEventListener('scroll', scrollHandler);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
@@ -154,7 +94,6 @@ export function Main() {
             : cards?.length > 0 &&
               cards.map((card, i) => <MainCard key={`${card.id}-${i}`} {...card} />)}
         </section>
-        {cards?.length > 0 && isScrollLoading && !isLastPage && <h3 className="h3">LOADING...</h3>}
       </div>
     </main>
   );

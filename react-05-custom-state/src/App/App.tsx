@@ -6,7 +6,7 @@ import { About } from './pages/About';
 import { Main } from './pages/Main';
 import { Form } from './pages/Form';
 import { NotFound } from './pages/NotFound';
-import { MainPageProvider } from './store/MainPageContext';
+import { MainPageProvider } from './store/MainPageState';
 
 export function App() {
   return (

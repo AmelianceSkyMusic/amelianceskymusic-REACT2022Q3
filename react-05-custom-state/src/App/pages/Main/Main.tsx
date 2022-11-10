@@ -58,7 +58,7 @@ export function Main() {
     if (event.key === 'Enter') {
       const prevSearchValue = localStorage.getItem('searchValue');
       const nextSearchValue = state.searchValue?.trim();
-      if (nextSearchValue) localStorage.setItem('searchValue', nextSearchValue);
+      localStorage.setItem('searchValue', nextSearchValue);
 
       //* prevent to do something if search value do not changed
       if (prevSearchValue !== nextSearchValue) {
@@ -70,6 +70,7 @@ export function Main() {
         } else {
           state.setCards([]);
           state.setIsSearchAppliedFalse();
+          state.setIsErrorFalse();
         }
       }
     }

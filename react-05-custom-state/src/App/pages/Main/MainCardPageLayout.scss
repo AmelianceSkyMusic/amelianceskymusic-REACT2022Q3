@@ -1,0 +1,44 @@
+.header.main-card-page-layout {
+  .container {
+    justify-content: center;
+    padding-top: var(--gap);
+  }
+  .navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+  }
+  .navigation-back {
+    display: none;
+  }
+  .active {
+    font-weight: bold;
+  }
+  .breadcrumbs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+#root:has(.main-card-page) {
+  .header.main-card-page-layout {
+    .container {
+      justify-content: space-between;
+    }
+    .navigation-back {
+      display: block;
+    }
+  }
+}
+
+.footer.main-card-page-layout {
+  .container {
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+    padding-bottom: var(--gap);
+  }
+}

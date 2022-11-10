@@ -1,8 +1,15 @@
 .main-card-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color--1);
+  .container {
+    width: 100%;
+    justify-content: center;
+  }
+  &__content {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 32px;
+  }
   &__video {
     width: 560px;
     height: 315px;
@@ -16,18 +23,89 @@
     // position: absolute;
     // z-index: -1;
     // bottom: 0;
-    // opacity: 0;
+    opacity: 0%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     max-width: 560px;
     padding: 16px;
     gap: 8px;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateY(-30%);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    &:hover {
+      opacity: 100%;
+      transform: translateY(0%);
+    }
+    &.show {
+      opacity: 100%;
+      transform: translateY(0%);
+    }
+  }
+
+  &__title-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
   }
 }
 
+.main-card-page__content:hover .main-card-page__info {
+  opacity: 100%;
+  transform: translateY(0%);
+}
+
+// .main-card-page {
+//   .container {
+//     justify-content: center;
+//   }
+//   &__content {
+//     display: flex;
+//     align-items: center;
+//     flex-direction: column;
+//     gap: 32px;
+//   }
+//   &__top-bar {
+//     width: 100%;
+//     display: flex;
+//     justify-content: space-between;
+//   }
+//   &__video {
+//     width: 560px;
+//     height: 315px;
+//     border-radius: 16px;
+//     transform: translateZ(0px);
+//     overflow: hidden;
+//     &:hover + .main-card-page__info {
+//       opacity: 100%;
+//       transform: translateY(0%);
+//     }
+//   }
+
+//   &__info {
+//     color: var(--color--f2-1);
+//     position: absolute;
+//     z-index: -1;
+//     top: 0;
+//     opacity: 0%;
+//     display: flex;
+//     flex-direction: column;
+//     transform: translateY(0%);
+
+//     max-width: 560px;
+//     padding: 16px;
+//     gap: 16px;
+//     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+//     &:hover {
+//       opacity: 100%;
+//       transform: translateY(0%);
+//     }
+
+//   }
+
+// }
+
 // .main-card-page__video:hover + .main-card-page__info {
 //   opacity: 100%;
-//   transform: translateY(100%);
+//   transform: translateY(0%);
 // }

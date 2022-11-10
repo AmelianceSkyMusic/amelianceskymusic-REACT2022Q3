@@ -7,29 +7,35 @@ export class Layout extends Component {
     return (
       <>
         <header className="header">
-          <NavLink className="p1" end to="/">
-            Main
-          </NavLink>
-          <NavLink className="p1" to="/form">
-            Form
-          </NavLink>
-          <NavLink className="p1" to="/about">
-            About
-          </NavLink>
-          <NavLink className="p1" to="/404">
-            404
-          </NavLink>
+          <div className="container">
+            <nav className="navigation">
+              <NavLink className="p1" end to="/">
+                Main
+              </NavLink>
+              <NavLink className="p1" to="/form">
+                Form
+              </NavLink>
+              <NavLink className="p1" to="/about">
+                About
+              </NavLink>
+              <NavLink className="p1" to="/404">
+                404
+              </NavLink>
+            </nav>
+          </div>
         </header>
         <Outlet />
         <footer className="footer">
-          <a
-            href="https://amelianceskymusic.github.io/"
-            target="_blank"
-            className="link link__underlined "
-            rel="noreferrer"
-          >
-            AmelianceSkyMusic © 2022
-          </a>
+          <div className="container">
+            <a
+              href="https://amelianceskymusic.github.io/"
+              target="_blank"
+              className="link underlined"
+              rel="noreferrer"
+            >
+              AmelianceSkyMusic © 2022
+            </a>
+          </div>
         </footer>
       </>
     );

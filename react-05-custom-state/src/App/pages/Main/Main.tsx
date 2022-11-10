@@ -8,7 +8,6 @@ import { useMainPageContext } from 'App/store/MainPageState';
 
 export function Main() {
   const state = useMainPageContext();
-  console.log('state:', state);
 
   const getFetchedData = async (searchValue: string, nextPageArg?: string) => {
     const response = await api.google.youtube.get(searchValue, nextPageArg);
@@ -30,6 +29,7 @@ export function Main() {
       }
     } else if (response && response.error) {
       state.setIsErrorTrue();
+      state.setCards([]);
       if (response.error.code === 403) {
         state.setErrorMessage(
           "That's it! Come back tomorrow. Google quotas for queries are not infinite! ¯\\_O_o_/¯"
@@ -39,6 +39,7 @@ export function Main() {
       }
     } else {
       state.setIsErrorTrue();
+      state.setCards([]);
     }
 
     state.setIsSearchAppliedTrue();
@@ -87,7 +88,7 @@ export function Main() {
           onChange={handleSearchChange}
           onKeyDown={handlerSearchApply}
         />
-        <section className="cards">
+        <section className="cards row">
           {state.isError && (
             <h3 className="h3 error">{state.errorMessage || 'Sorry! Something went wrong!'}</h3>
           )}

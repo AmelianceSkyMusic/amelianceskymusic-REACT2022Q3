@@ -9,6 +9,7 @@ import { joinClasses } from './joinClasses';
 import { msg } from './msg';
 import { shuffleArray } from './shuffleArray';
 import { sortArrayOfObj } from './sortArrayOfObj';
+import { stringCut } from './stringCut';
 
 export {
   createHTMLElem,
@@ -22,6 +23,7 @@ export {
   msg,
   shuffleArray,
   sortArrayOfObj,
+  stringCut,
 };
 
 const asm = {
@@ -36,6 +38,7 @@ const asm = {
   msg,
   shuffleArray,
   sortArrayOfObj,
+  stringCut,
 };
 
 export default asm;

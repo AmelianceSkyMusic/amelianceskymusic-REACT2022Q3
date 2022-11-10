@@ -1,9 +1,0 @@
-@use "../globals/" as *;
-
-$iconsSet: ();
-
-@each $icon in $iconsSet {
-	.#{$icon} {
-		@include useSvgIcon($icon + ".svg");
-	}
-}

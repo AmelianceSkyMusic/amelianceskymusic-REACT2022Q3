@@ -3,8 +3,8 @@
 // @forward "button-sm";
 // @forward "button-icon";
 // @forward "button-icon-sm";
-// @forward "icon";
-// @forward "icon-sm";
+@forward "icon";
+@forward "icon-sm";
 @forward "link";
 // @forward "scroll";
 // @forward "input-color";
@@ -17,6 +17,6 @@
 // @forward "select";
 // @forward "modal";
 // @forward "input-text";
-// @forward "click";
+@forward "click";
 
 @forward "inputs/";

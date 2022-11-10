@@ -1,12 +1,12 @@
-@use "./functions.scss" as *;
+@use "./functions/other.scss" as *;
 
 // >----------------------------------------------------------------<
 // >                             MIXINS                             <
 // >----------------------------------------------------------------<
 
-@mixin useSvgIcon($img) {
-	mask-image: svg($img);
-	-webkit-mask-image: svg($img);
+@mixin useSvgIcon($path, $img) {
+	mask-image: url($path + $img + ".svg");
+	-webkit-mask-image: url($path + $img + ".svg");
 }
 
 // !------------------------ TEST↓↓↓↓↓↓ ------------------------

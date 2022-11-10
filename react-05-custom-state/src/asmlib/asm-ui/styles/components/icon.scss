@@ -13,10 +13,16 @@
 	border: none;
 
 	background-color: var(--icon__color);
-	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-repet: no-repeat;
 	mask-repeat: no-repeat;
 	-webkit-mask-size: contain;
 	mask-size: contain;
+
+	&.inverted {
+		color: var(--icon-inverted__color);
+		background-color: var(--icon-inverted__color);
+	}
+
 	&.click {
 		cursor: pointer;
 		&:disabled,

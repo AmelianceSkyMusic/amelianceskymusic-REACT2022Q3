@@ -4,7 +4,7 @@
 	color: var(--color__link);
 	text-decoration: none;
 
-	&__underlined {
+	&.underlined {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}

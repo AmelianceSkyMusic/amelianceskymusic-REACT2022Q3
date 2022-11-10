@@ -7,6 +7,7 @@ import { Main } from './pages/Main';
 import { Form } from './pages/Form';
 import { NotFound } from './pages/NotFound';
 import { MainPageProvider } from './store/MainPageState';
+import { MainCardPage } from './pages/Main/MainCardPage';
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Main />} />
+            <Route path="card/:id" element={<MainCardPage />} />
             <Route path="about" element={<About />} />
             <Route path="form" element={<Form />} />
             <Route path="404" element={<NotFound />} />

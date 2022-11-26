@@ -1,11 +1,15 @@
 import './MainCardPageLayout.scss';
 import React from 'react';
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useMainPageContext } from 'App/store/MainPageState';
+import asm from 'asmlib/asm-scripts';
 
 export function MainCardPageLayout() {
   const navigate = useNavigate();
 
-  const { id } = useParams(); // TODO: remove and set name form state
+  const state = useMainPageContext();
+
+  const title = state.currentCard ? state.currentCard.snippet.title : '';
 
   return (
     <>
@@ -20,7 +24,7 @@ export function MainCardPageLayout() {
               Main
             </NavLink>
             <p className="p1">/</p>
-            <p className="p1 active">{id}</p>
+            <p className="p1 active">{asm.stringCut(title, 28)}</p>
           </nav>
           <nav className="navigation">
             <NavLink className="p1" to="/form">

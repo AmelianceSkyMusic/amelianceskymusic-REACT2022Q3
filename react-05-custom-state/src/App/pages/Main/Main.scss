@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 64px;
+    gap: 32px;
   }
 
   .cards {
@@ -25,5 +25,15 @@
     border-radius: 32px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+  }
+
+  .next-page {
+    align-self: center;
+  }
+  .pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
   }
 }

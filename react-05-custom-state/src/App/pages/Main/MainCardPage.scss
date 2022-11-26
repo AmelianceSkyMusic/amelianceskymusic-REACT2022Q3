@@ -1,38 +1,35 @@
 .main-card-page {
   .container {
-    width: 100%;
     justify-content: center;
+    width: 100%;
   }
   &__content {
-    max-width: 100%;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     gap: 32px;
+    max-width: 100%;
   }
   &__video {
     width: 560px;
     height: 315px;
+    overflow: hidden;
     border-radius: 16px;
     transform: translateZ(0px);
-    overflow: hidden;
   }
 
   &__info {
-    color: var(--color--f2-1);
-    // position: absolute;
-    // z-index: -1;
-    // bottom: 0;
-    opacity: 0%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-
+    gap: 8px;
     max-width: 560px;
     padding: 16px;
-    gap: 8px;
-    transform: translateY(-30%);
+    overflow: hidden;
+    color: var(--color--f2-1);
+    opacity: 0%;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(-30%);
+
     &:hover {
       opacity: 100%;
       transform: translateY(0%);
@@ -45,8 +42,9 @@
 
   &__title-container {
     display: flex;
-    justify-content: center;
-    gap: 8px;
+    justify-content: space-between;
+    align-items: start;
+    gap: 16px;
   }
 }
 
@@ -54,58 +52,3 @@
   opacity: 100%;
   transform: translateY(0%);
 }
-
-// .main-card-page {
-//   .container {
-//     justify-content: center;
-//   }
-//   &__content {
-//     display: flex;
-//     align-items: center;
-//     flex-direction: column;
-//     gap: 32px;
-//   }
-//   &__top-bar {
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-between;
-//   }
-//   &__video {
-//     width: 560px;
-//     height: 315px;
-//     border-radius: 16px;
-//     transform: translateZ(0px);
-//     overflow: hidden;
-//     &:hover + .main-card-page__info {
-//       opacity: 100%;
-//       transform: translateY(0%);
-//     }
-//   }
-
-//   &__info {
-//     color: var(--color--f2-1);
-//     position: absolute;
-//     z-index: -1;
-//     top: 0;
-//     opacity: 0%;
-//     display: flex;
-//     flex-direction: column;
-//     transform: translateY(0%);
-
-//     max-width: 560px;
-//     padding: 16px;
-//     gap: 16px;
-//     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-//     &:hover {
-//       opacity: 100%;
-//       transform: translateY(0%);
-//     }
-
-//   }
-
-// }
-
-// .main-card-page__video:hover + .main-card-page__info {
-//   opacity: 100%;
-//   transform: translateY(0%);
-// }

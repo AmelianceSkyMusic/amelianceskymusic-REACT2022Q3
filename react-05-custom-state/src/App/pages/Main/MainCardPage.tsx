@@ -1,24 +1,15 @@
 import './MainCardPage.scss';
 import { useMainPageContext } from 'App/store/MainPageState';
-import React, { useEffect, useState } from 'react';
-import { useMatches, useNavigate, useParams } from 'react-router-dom';
-import { IVideoItem } from 'App/types/IYoutubeResponse';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import asm from 'asmlib/asm-scripts';
 
 export function MainCardPage() {
-  // const matches = useMatches();
-  // const crumbs = matches;
-
   const { id } = useParams();
   const navigate = useNavigate();
   const state = useMainPageContext();
-  // console.log('crumbs:', crumbs);
 
-  const [card, setCard] = useState<IVideoItem>();
-
-  const [isPinInfo, setIsPinInfo] = useState(false);
-
-  const handlerOnPinInfoClick = () => setIsPinInfo((prev) => !prev);
+  const handlerOnPinInfoClick = () => state.toggleIsPinInfo();
 
   useEffect(() => {
     const index = state.cards.findIndex((item) => item.id.videoId === id);
@@ -27,14 +18,14 @@ export function MainCardPage() {
       navigate('/');
       return;
     } else {
-      setCard(state.cards[index]);
+      state.setCurrentCard(state.cards[index]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!card) return null;
+  if (!state.currentCard) return null;
 
-  const mainCardPageInfo = asm.joinClasses('main-card-page__info', isPinInfo ? 'show' : null);
+  const mainCardPageInfo = asm.joinClasses('main-card-page__info', state.isPinInfo ? 'show' : null);
 
   return (
     <div className="main-card-page">
@@ -44,7 +35,7 @@ export function MainCardPage() {
             <iframe
               width="560"
               height="315"
-              src={`https://www.youtube.com/embed/${card.id.videoId}`}
+              src={`https://www.youtube.com/embed/${state.currentCard.id.videoId}`}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -53,8 +44,10 @@ export function MainCardPage() {
           </div>
           <div className={mainCardPageInfo}>
             <div className="main-card-page__title-container">
-              <h3 className="h3 inverted main-card-page__title">{card.snippet.title}</h3>
-              {isPinInfo ? (
+              <h3 className="h3 inverted main-card-page__title">
+                {state.currentCard.snippet.title}
+              </h3>
+              {state.isPinInfo ? (
                 <button
                   onClick={handlerOnPinInfoClick}
                   className="icon inverted click icon--pin main-card-page__icon-pin"
@@ -66,9 +59,15 @@ export function MainCardPage() {
                 />
               )}
             </div>
-            <p className="p1 inverted main-card-page__title">{card.snippet.channelTitle}</p>
-            <p className="p1 inverted main-card-page__title">{card.snippet.description}</p>
-            <p className="p1 inverted main-card-page__title">{card.snippet.publishTime}</p>
+            <p className="p1 inverted main-card-page__title">
+              {state.currentCard.snippet.channelTitle}
+            </p>
+            <p className="p1 inverted main-card-page__title">
+              {state.currentCard.snippet.description}
+            </p>
+            <p className="p1 inverted main-card-page__title">
+              {state.currentCard.snippet.publishTime}
+            </p>
           </div>
         </div>
       </div>

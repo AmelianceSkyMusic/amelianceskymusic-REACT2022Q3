@@ -62,7 +62,8 @@ export interface IError {
 export interface IYoutubeResponse {
   kind: string;
   etag: string;
-  nextPageToken: string;
+  nextPageToken?: string;
+  prevPageToken?: string;
   regionCode: string;
   pageInfo: PageInfo;
   items: IVideoItem[];

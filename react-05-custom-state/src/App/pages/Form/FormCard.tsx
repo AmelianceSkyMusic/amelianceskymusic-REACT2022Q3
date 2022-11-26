@@ -1,12 +1,12 @@
 import './FormCard.scss';
 import React from 'react';
-import { IFormCardData } from './IFormCardData';
+import { IFormCard } from 'App/store/FormPageState/FormPageStateTypes';
 
-interface IFormCard {
-  card: IFormCardData;
+interface IFormCardProps {
+  card: IFormCard;
 }
 
-export function FormCard({ card }: IFormCard) {
+export function FormCard({ card }: IFormCardProps) {
   return (
     <div className="form-card col-3" data-testid="card">
       {card.avatar && <img className="form-card__image" src={card.avatar} alt={card.avatar} />}

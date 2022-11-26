@@ -1,6 +1,6 @@
 import './FormCard.scss';
 import './Form.scss';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TextInput } from 'App/components/form/TextInput';
 import { FileImgUpload } from 'App/components/form/FileImgUpload';
@@ -9,21 +9,14 @@ import { Dropdown } from 'App/components/form/Dropdown';
 import { Checkbox } from 'App/components/form/Checkbox';
 import { Switcher } from 'App/components/form/Switcher';
 import { RadioButtons } from 'App/components/form/RadioButtons';
-import { IFormCardData } from './IFormCardData';
+
 import { FormCard } from './FormCard';
 import asm from 'asmlib/asm-scripts';
-interface IFormInputs {
-  firstName: string;
-  birthday: string;
-  framework: string;
-  good: boolean;
-  showSex: boolean;
-  sex: string;
-  avatar: FileList;
-}
+import { IFormInputs } from 'App/store/FormPageState/FormPageStateTypes';
+import { useFormPageContext } from 'App/store/FormPageState/useFormPageContext';
 
 export function Form() {
-  const [cards, setCards] = useState<IFormCardData[]>([]);
+  const state = useFormPageContext();
 
   const {
     register,
@@ -34,12 +27,13 @@ export function Form() {
   } = useForm<IFormInputs>({
     mode: 'onSubmit',
     defaultValues: {
-      firstName: '',
-      birthday: '',
-      framework: '',
-      good: false,
-      showSex: false,
-      sex: undefined,
+      ...state?.form,
+      firstName: state?.form.firstName,
+      birthday: state?.form.birthday,
+      framework: state?.form.framework,
+      good: state?.form.good,
+      showSex: state?.form.showSex,
+      sex: state?.form.sex,
       avatar: undefined,
     },
   });
@@ -65,29 +59,43 @@ export function Form() {
     reset();
   };
 
+  const handleFormChange = () => {
+    state?.setForm({
+      firstName: watch('firstName'),
+      birthday: watch('birthday'),
+      framework: watch('framework'),
+      good: watch('good'),
+      showSex: watch('showSex'),
+      sex: watch('sex'),
+      avatar: watch('avatar'),
+    });
+  };
+
   const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) => {
-    const imageObject = data.avatar[0];
+    const imageObject = (data.avatar as FileList)[0];
 
     const image = URL.createObjectURL(imageObject);
-    setCards((prev) => [
-      ...prev,
-      {
-        firstName: data.firstName,
-        birthday: data.birthday.replaceAll('-', ' '),
-        framework: data.framework.trim(),
-        good: data.good,
-        sex: data.sex,
-        avatar: image,
-        id: prev.length + 1,
-      },
-    ]);
+    state?.addCard({
+      firstName: data.firstName,
+      birthday: data.birthday.replaceAll('-', ' '),
+      framework: data.framework.trim(),
+      good: data.good,
+      sex: data.sex as string,
+      avatar: image,
+      id: state.cards.length + 1,
+    });
     handleReset();
   };
 
   return (
     <main className="form-page main">
       <div className="container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)} data-testid="form">
+        <form
+          className="form"
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={handleFormChange}
+          data-testid="form"
+        >
           <TextInput register={firstName} errors={errors} testId="first-name">
             Your Name*:
           </TextInput>
@@ -136,9 +144,10 @@ export function Form() {
           </div>
         </form>
 
-        {cards.length > 0 && (
+        {state && state.cards.length > 0 && (
           <section className="form-cards row">
-            {cards.length > 0 && cards.map((card) => <FormCard key={card.id} card={card} />)}
+            {state.cards.length > 0 &&
+              state.cards.map((card) => <FormCard key={card.id} card={card} />)}
           </section>
         )}
       </div>

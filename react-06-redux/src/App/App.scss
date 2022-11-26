@@ -1,0 +1,15 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--gap) * 2);
+
+  background: linear-gradient(230deg, #a1b7ff, #9ff1ff);
+  &:has(.main-card-page) {
+    background: var(--color--1);
+    a,
+    .p1 {
+      color: var(--color--f2-1);
+    }
+  }
+}

@@ -4,3 +4,12 @@
 html::-webkit-scrollbar {
   width: 0;
 }
+
+// add icons class with styles to project
+$iconsSet: icon--pin, icon--not-pin, icon--arrow-left;
+@each $icon in $iconsSet {
+  .#{$icon} {
+    $path: "./assets/svg/icons/";
+    @include useSvgIcon($path, $icon);
+  }
+}

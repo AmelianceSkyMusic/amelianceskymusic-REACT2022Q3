@@ -5,12 +5,17 @@ export interface IMainPageState {
   isError: boolean;
   errorMessage: string | null;
   cards: IVideoItem[];
-  cardsCount: number;
-  isLastPage: boolean;
-  nextPage: undefined;
-  isScrollLoading: boolean;
-  searchValue: string | undefined;
+  searchValue: string;
   isSearchApplied: boolean;
+  currentCard: IVideoItem | null;
+  isPinInfo: boolean;
+  cardsPerPage: string;
+  sortingType: string;
+  nextPage: string | undefined;
+  prevPage: string | undefined;
+  currentPage: string | undefined;
+  pagesCount: number;
+  currentPageNumber: number;
 }
 
 export const initialMainPageState = {
@@ -18,10 +23,15 @@ export const initialMainPageState = {
   isError: false,
   errorMessage: null,
   cards: [],
-  cardsCount: 0,
-  isLastPage: false,
-  nextPage: undefined,
-  isScrollLoading: false,
   searchValue: localStorage.getItem('searchValue') || '',
   isSearchApplied: false,
+  currentCard: null,
+  isPinInfo: false,
+  cardsPerPage: '1',
+  sortingType: 'relevance',
+  nextPage: undefined,
+  prevPage: undefined,
+  currentPage: undefined,
+  pagesCount: 0,
+  currentPageNumber: 1,
 };

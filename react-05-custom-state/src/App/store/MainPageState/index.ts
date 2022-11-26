@@ -1,3 +1,7 @@
-export { MainPageContext } from './MainPageContext';
-export { MainPageProvider } from './MainPageProvider';
-export { useMainPageContext } from './useMainPageContext';
+import { MainPageContext } from './MainPageContext';
+import { MainPageProvider } from './MainPageProvider';
+import { useMainPageContext } from './useMainPageContext';
+
+export { MainPageContext };
+export { MainPageProvider };
+export { useMainPageContext };

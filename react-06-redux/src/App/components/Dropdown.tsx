@@ -6,10 +6,11 @@ interface IProps {
   selected?: string;
   children?: React.ReactNode;
   testId?: string;
+  disabled?: boolean;
   onChange?: (key: string) => void;
 }
 
-export function Dropdown({ options, children, testId, selected, onChange }: IProps) {
+export function Dropdown({ options, children, testId, selected, disabled, onChange }: IProps) {
   const [selectedValue, setSelectedValue] = useState(selected);
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
@@ -26,6 +27,7 @@ export function Dropdown({ options, children, testId, selected, onChange }: IPro
           className="dropdown__input input dropdown"
           value={selectedValue}
           onChange={handleOnChange}
+          disabled={disabled}
           data-testid={testId}
         >
           {options.map((optionValue) => (

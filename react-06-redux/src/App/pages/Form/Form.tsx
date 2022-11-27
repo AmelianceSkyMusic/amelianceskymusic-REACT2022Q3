@@ -1,6 +1,6 @@
 import './FormCard.scss';
 import './Form.scss';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TextInput } from 'App/components/form/TextInput';
 import { FileImgUpload } from 'App/components/form/FileImgUpload';
@@ -12,11 +12,18 @@ import { RadioButtons } from 'App/components/form/RadioButtons';
 
 import { FormCard } from './FormCard';
 import asm from 'asmlib/asm-scripts';
-import { IFormInputs } from 'App/store/FormPageState/FormPageStateTypes';
-import { useFormPageContext } from 'App/store/FormPageState/useFormPageContext';
+import { useTypedSelector } from 'App/store/hooks/useTypedSelector';
+import { formPageSlice } from 'App/store/formPage/formPageSlice';
+import { useTypedDispatch } from 'App/store/hooks/useTypedDispatch';
+import { IFormInputs } from 'App/types/IFormInputs';
+import { IFormCard } from 'App/types/IFormCard';
 
 export function Form() {
-  const state = useFormPageContext();
+  const state = useTypedSelector((state) => state.formPageReducer);
+  console.log('state:', state);
+
+  const { actions } = formPageSlice;
+  const dispatch = useTypedDispatch();
 
   const {
     register,
@@ -28,13 +35,6 @@ export function Form() {
     mode: 'onSubmit',
     defaultValues: {
       ...state?.form,
-      firstName: state?.form.firstName,
-      birthday: state?.form.birthday,
-      framework: state?.form.framework,
-      good: state?.form.good,
-      showSex: state?.form.showSex,
-      sex: state?.form.sex,
-      avatar: undefined,
     },
   });
 
@@ -56,34 +56,39 @@ export function Form() {
   const showSexWatch = watch('showSex');
 
   const handleReset = () => {
+    dispatch(actions.resetForm());
     reset();
   };
 
   const handleFormChange = () => {
-    state?.setForm({
-      firstName: watch('firstName'),
-      birthday: watch('birthday'),
-      framework: watch('framework'),
-      good: watch('good'),
-      showSex: watch('showSex'),
-      sex: watch('sex'),
-      avatar: watch('avatar'),
-    });
+    dispatch(
+      actions?.setForm({
+        firstName: watch('firstName'),
+        birthday: watch('birthday'),
+        framework: watch('framework'),
+        good: watch('good'),
+        showSex: watch('showSex'),
+        sex: watch('sex'),
+        avatar: undefined,
+      })
+    );
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) => {
     const imageObject = (data.avatar as FileList)[0];
 
     const image = URL.createObjectURL(imageObject);
-    state?.addCard({
-      firstName: data.firstName,
-      birthday: data.birthday.replaceAll('-', ' '),
-      framework: data.framework.trim(),
-      good: data.good,
-      sex: data.sex as string,
-      avatar: image,
-      id: state.cards.length + 1,
-    });
+    dispatch(
+      actions?.addCard({
+        firstName: data.firstName,
+        birthday: data.birthday.replaceAll('-', ' '),
+        framework: data.framework.trim(),
+        good: data.good,
+        sex: data.sex as string,
+        avatar: image,
+        id: state.cards.length + 1,
+      })
+    );
     handleReset();
   };
 
@@ -131,7 +136,7 @@ export function Form() {
             Select your avatar:*
           </FileImgUpload>
           <div className="form__buttons">
-            <button className="button secondary" onClick={handleReset} disabled={!isDirty}>
+            <button type="button" className="button secondary" onClick={handleReset}>
               Reset
             </button>
             <input
@@ -147,7 +152,7 @@ export function Form() {
         {state && state.cards.length > 0 && (
           <section className="form-cards row">
             {state.cards.length > 0 &&
-              state.cards.map((card) => <FormCard key={card.id} card={card} />)}
+              state.cards.map((card: IFormCard) => <FormCard key={card.id} card={card} />)}
           </section>
         )}
       </div>

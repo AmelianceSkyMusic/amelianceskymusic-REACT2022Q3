@@ -1,6 +1,6 @@
 import './FormCard.scss';
 import React from 'react';
-import { IFormCard } from 'App/store/FormPageState/FormPageStateTypes';
+import { IFormCard } from 'App/types/IFormCard';
 
 interface IFormCardProps {
   card: IFormCard;

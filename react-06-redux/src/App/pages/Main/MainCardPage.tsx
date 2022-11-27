@@ -15,8 +15,6 @@ export function MainCardPage() {
   const { actions } = mainPageSlice;
   const dispatch = useTypedDispatch();
 
-  console.log('state.currentCard:', state.currentCard);
-
   const handlerOnPinInfoClick = () => dispatch(actions.toggleIsPinInfo());
 
   useEffect(() => {
@@ -27,7 +25,6 @@ export function MainCardPage() {
       return;
     } else {
       dispatch(actions.setCurrentCard(state.cards[index]));
-      console.log('state.cards[index]:', state.cards[index]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

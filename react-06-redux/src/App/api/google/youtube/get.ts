@@ -22,10 +22,7 @@ export async function get({ search, goToPageToken, maxResults, order }: IGet) {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
-    console.log('data', data);
-
-    return data;
+    return await response.json();
   } catch (error) {
     throw error;
   }

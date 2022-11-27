@@ -20,7 +20,6 @@ import { IFormCard } from 'App/types/IFormCard';
 
 export function Form() {
   const state = useTypedSelector((state) => state.formPageReducer);
-  console.log('state:', state);
 
   const { actions } = formPageSlice;
   const dispatch = useTypedDispatch();

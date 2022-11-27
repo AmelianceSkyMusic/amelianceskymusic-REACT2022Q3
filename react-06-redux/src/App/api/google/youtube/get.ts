@@ -1,20 +1,13 @@
-import { IYoutubeResponse } from 'App/types/IYoutubeResponse';
-
 const API_KEY = 'AIzaSyA9YikBIyr40Kd04CdPPDGMP8lcLzthTcg';
 const baseURL = 'https://www.googleapis.com/youtube/v3/search';
-interface IGet {
+export interface IGet {
   search: string;
   goToPageToken?: string;
   maxResults?: string;
   order?: string;
 }
 
-export async function get({
-  search,
-  goToPageToken,
-  maxResults,
-  order,
-}: IGet): Promise<IYoutubeResponse | null> {
+export async function get({ search, goToPageToken, maxResults, order }: IGet) {
   const URLParams = new URLSearchParams();
 
   if (search) URLParams.append('q', search);
@@ -30,9 +23,10 @@ export async function get({
   try {
     const response = await fetch(url);
     const data = await response.json();
-    return { ...data };
+    console.log('data', data);
+
+    return data;
   } catch (error) {
-    console.error('---ASM--->', error);
+    throw error;
   }
-  return null;
 }

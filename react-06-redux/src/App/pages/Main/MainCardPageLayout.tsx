@@ -1,15 +1,16 @@
 import './MainCardPageLayout.scss';
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useMainPageContext } from 'App/store/MainPageState';
 import asm from 'asmlib/asm-scripts';
+import { useTypedSelector } from 'App/store/hooks/useTypedSelector';
+import { IVideoItem } from 'App/types/IYoutubeResponse';
 
 export function MainCardPageLayout() {
   const navigate = useNavigate();
 
-  const state = useMainPageContext();
+  const state = useTypedSelector((state) => state.mainPageReducer);
 
-  const title = state.currentCard ? state.currentCard.snippet.title : '';
+  const title = state.currentCard ? (state.currentCard as IVideoItem).snippet.title : '';
 
   return (
     <>

@@ -1,24 +1,33 @@
 import './MainCardPage.scss';
-import { useMainPageContext } from 'App/store/MainPageState';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import asm from 'asmlib/asm-scripts';
+import { useTypedSelector } from 'App/store/hooks/useTypedSelector';
+import { useTypedDispatch } from 'App/store/hooks/useTypedDispatch';
+import { IVideoItem } from 'App/types/IYoutubeResponse';
+import { mainPageSlice } from 'App/store/mainPage/mainPageSlice';
 
 export function MainCardPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const state = useMainPageContext();
 
-  const handlerOnPinInfoClick = () => state.toggleIsPinInfo();
+  const navigate = useNavigate();
+  const state = useTypedSelector((state) => state.mainPageReducer);
+  const { actions } = mainPageSlice;
+  const dispatch = useTypedDispatch();
+
+  console.log('state.currentCard:', state.currentCard);
+
+  const handlerOnPinInfoClick = () => dispatch(actions.toggleIsPinInfo());
 
   useEffect(() => {
-    const index = state.cards.findIndex((item) => item.id.videoId === id);
+    const index = state.cards.findIndex((item: IVideoItem) => item.id.videoId === id);
 
     if (index < 0) {
       navigate('/');
       return;
     } else {
-      state.setCurrentCard(state.cards[index]);
+      dispatch(actions.setCurrentCard(state.cards[index]));
+      console.log('state.cards[index]:', state.cards[index]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -35,7 +44,9 @@ export function MainCardPage() {
             <iframe
               width="560"
               height="315"
-              src={`https://www.youtube.com/embed/${state.currentCard.id.videoId}`}
+              src={`https://www.youtube.com/embed/${
+                (state.currentCard as IVideoItem).id.videoId // ! HOW CAN I FIX THIS?
+              }`}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -45,7 +56,7 @@ export function MainCardPage() {
           <div className={mainCardPageInfo}>
             <div className="main-card-page__title-container">
               <h3 className="h3 inverted main-card-page__title">
-                {state.currentCard.snippet.title}
+                {(state.currentCard as IVideoItem).snippet.title}
               </h3>
               {state.isPinInfo ? (
                 <button
@@ -60,13 +71,13 @@ export function MainCardPage() {
               )}
             </div>
             <p className="p1 inverted main-card-page__title">
-              {state.currentCard.snippet.channelTitle}
+              {(state.currentCard as IVideoItem).snippet.channelTitle}
             </p>
             <p className="p1 inverted main-card-page__title">
-              {state.currentCard.snippet.description}
+              {(state.currentCard as IVideoItem).snippet.description}
             </p>
             <p className="p1 inverted main-card-page__title">
-              {state.currentCard.snippet.publishTime}
+              {(state.currentCard as IVideoItem).snippet.publishTime}
             </p>
           </div>
         </div>

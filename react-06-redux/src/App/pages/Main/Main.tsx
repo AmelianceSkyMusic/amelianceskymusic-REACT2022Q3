@@ -4,11 +4,16 @@ import api from 'App/api';
 import { Search } from 'App/components/Search';
 import { Loader } from 'App/components/Loader';
 import { MainCard } from './MainCard';
-import { useMainPageContext } from 'App/store/MainPageState';
 import { Dropdown } from 'App/components/Dropdown';
+import { useTypedSelector } from 'App/store/hooks/useTypedSelector';
+import { useTypedDispatch } from 'App/store/hooks/useTypedDispatch';
+import { IVideoItem } from 'App/types/IYoutubeResponse';
+import { mainPageSlice } from 'App/store/mainPage/mainPageSlice';
 
 export function Main() {
-  const state = useMainPageContext();
+  const state = useTypedSelector((state) => state.mainPageReducer);
+  const { actions } = mainPageSlice;
+  const dispatch = useTypedDispatch();
 
   const getFetchedData = async (
     searchValue: string,
@@ -25,48 +30,52 @@ export function Main() {
 
     if (response && !response.error) {
       if (response.items.length > 0) {
-        state.setCards(response.items);
-        state.setIsErrorFalse();
-        state.setNextPage(response.nextPageToken);
-        state.setPrevPage(response.prevPageToken);
+        dispatch(actions.setCards(response.items));
+        dispatch(actions.setIsErrorFalse());
+        dispatch(actions.setNextPage(response.nextPageToken));
+        dispatch(actions.setPrevPage(response.prevPageToken));
       } else {
-        state.setErrorMessage('Sorry! I found nothing!  ¯\\_O_o_/¯');
-        state.setIsErrorTrue();
-        state.setCards([]);
+        dispatch(actions.setErrorMessage('Sorry! I found nothing!  ¯\\_O_o_/¯'));
+        dispatch(actions.setIsErrorTrue());
+        dispatch(actions.setCards([]));
       }
       if (response.items.length > 0 && response.nextPageToken) {
-        state.setPagesCount(
-          Math.ceil(response.pageInfo.totalResults / response.pageInfo.resultsPerPage) || 0
+        dispatch(
+          actions.setPagesCount(
+            Math.ceil(response.pageInfo.totalResults / response.pageInfo.resultsPerPage) || 0
+          )
         );
       }
       if (!response.nextPageToken && !response.prevPageToken) {
-        state.setPagesCount(0);
-        state.setCurrentPageNumber(0);
+        dispatch(actions.setPagesCount(0));
+        dispatch(actions.setCurrentPageNumber(0));
       }
     } else if (response && response.error) {
-      state.setIsErrorTrue();
-      state.setCards([]);
-      state.setCurrentPageNumber(0);
+      dispatch(actions.setIsErrorTrue());
+      dispatch(actions.setCards([]));
+      dispatch(actions.setCurrentPageNumber(0));
       if (response.error.code === 403) {
-        state.setErrorMessage(
-          "That's it! Come back tomorrow. Google quotas for queries are not infinite! ¯\\_O_o_/¯"
+        dispatch(
+          actions.setErrorMessage(
+            "That's it! Come back tomorrow. Google quotas for queries are not infinite! ¯\\_O_o_/¯"
+          )
         );
       } else {
-        state.setErrorMessage(response.error.message);
+        dispatch(actions.setErrorMessage(response.error.message));
       }
     } else {
-      state.setIsErrorTrue();
-      state.setCards([]);
-      state.setCurrentPageNumber(0);
+      dispatch(actions.setIsErrorTrue());
+      dispatch(actions.setCards([]));
+      dispatch(actions.setCurrentPageNumber(0));
     }
 
-    state.setIsSearchAppliedTrue();
-    state.setIsLoadingFalse();
+    dispatch(actions.setIsSearchAppliedTrue());
+    dispatch(actions.setIsLoadingFalse());
   };
 
   useEffect(() => {
     if (state.searchValue) {
-      state.setIsSearchAppliedTrue();
+      dispatch(actions.setIsSearchAppliedTrue());
       getFetchedData(state.searchValue, state.cardsPerPage, state.sortingType, state.currentPage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,42 +86,42 @@ export function Main() {
       const prevSearchValue = localStorage.getItem('searchValue');
       const nextSearchValue = state.searchValue?.trim();
       localStorage.setItem('searchValue', nextSearchValue);
-      state.setCurrentPage(undefined);
-      state.setPagesCount(0);
-      state.setCurrentPageNumber(0);
+      dispatch(actions.setCurrentPage(undefined));
+      dispatch(actions.setPagesCount(0));
+      dispatch(actions.setCurrentPageNumber(0));
 
       //* prevent to do something if search value do not changed
       if (prevSearchValue !== nextSearchValue) {
         //* do fetch if search value is not empty
         if (nextSearchValue) {
-          state.setIsLoadingTrue();
-          state.setIsSearchAppliedTrue();
-          state.setCurrentPageNumber(1);
+          dispatch(actions.setIsLoadingTrue());
+          dispatch(actions.setIsSearchAppliedTrue());
+          dispatch(actions.setCurrentPageNumber(1));
           getFetchedData(nextSearchValue, state.cardsPerPage, state.sortingType, state.currentPage);
         } else {
-          state.setCards([]);
-          state.setIsSearchAppliedFalse();
-          state.setIsErrorFalse();
+          dispatch(actions.setCards([]));
+          dispatch(actions.setIsSearchAppliedFalse());
+          dispatch(actions.setIsErrorFalse());
         }
       }
     }
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    state.setSearchValue(event.target.value);
+    dispatch(actions.setSearchValue(event.target.value));
   };
 
   const handleNextPage = () => {
     if (state.nextPage && state.currentPageNumber < state.pagesCount) {
-      state.setCurrentPage(state.nextPage);
-      state.setCurrentPageNumber(state.currentPageNumber + 1);
+      dispatch(actions.setCurrentPage(state.nextPage));
+      dispatch(actions.setCurrentPageNumber(state.currentPageNumber + 1));
     }
   };
 
   const handlePrevPage = () => {
     if (state.prevPage && state.currentPageNumber > 0) {
-      state.setCurrentPage(state.prevPage);
-      state.setCurrentPageNumber(state.currentPageNumber - 1);
+      dispatch(actions.setCurrentPage(state.prevPage));
+      dispatch(actions.setCurrentPageNumber(state.currentPageNumber - 1));
     }
   };
 
@@ -127,14 +136,14 @@ export function Main() {
         />
         <Dropdown
           selected={state.sortingType}
-          onChange={state.setSortingType}
+          onChange={() => dispatch(actions.setSortingType())}
           options={['date', 'rating', 'relevance', 'title', 'videoCount', 'viewCount']}
         >
           Sorting:
         </Dropdown>
         <Dropdown
           selected={state.cardsPerPage}
-          onChange={state.setCardsPerPage}
+          onChange={() => dispatch(actions.setCardsPerPage())}
           options={['1', '2', '3', '4', '5']}
         >
           Items per page:
@@ -165,7 +174,9 @@ export function Main() {
           {state.isLoading
             ? state.isSearchApplied && <Loader />
             : state.cards?.length > 0 &&
-              state.cards.map((card, i) => <MainCard key={`${card.id}-${i}`} {...card} />)}
+              state.cards.map((card: IVideoItem, i) => (
+                <MainCard key={`${card.id}-${i}`} {...card} />
+              ))}
         </section>
       </div>
     </main>

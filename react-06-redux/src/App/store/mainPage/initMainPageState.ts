@@ -1,7 +1,6 @@
 export const initMainPageState = {
   isLoading: false,
-  isError: false,
-  errorMessage: null,
+  error: '',
   cards: [],
   searchValue: localStorage.getItem('searchValue') || '',
   isSearchApplied: false,
@@ -14,7 +13,4 @@ export const initMainPageState = {
   currentPage: undefined,
   pagesCount: 0,
   currentPageNumber: 1,
-  youtubeCards: [],
-  youtubeIsLoading: false,
-  youtubeError: '',
 };

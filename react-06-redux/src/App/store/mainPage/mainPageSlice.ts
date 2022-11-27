@@ -8,11 +8,6 @@ export const mainPageSlice = createSlice({
   initialState: initMainPageState,
   reducers: {
     setSearchValue: (state, action: PayloadAction<string>) => {
-      state.cards = [];
-      state.nextPage = undefined;
-      state.prevPage = undefined;
-      state.pagesCount = 0;
-      state.currentPageNumber = 0;
       state.searchValue = action.payload;
     },
     setIsSearchAppliedTrue: (state) => {
@@ -20,6 +15,11 @@ export const mainPageSlice = createSlice({
     },
     setIsSearchAppliedFalse: (state) => {
       state.isSearchApplied = false;
+      state.cards = [];
+      state.nextPage = undefined;
+      state.prevPage = undefined;
+      state.pagesCount = 0;
+      state.currentPageNumber = 0;
     },
     setCurrentCard: (state, action: PayloadAction<IVideoItem | null>) => {
       (state.currentCard as IVideoItem | null) = action.payload;
@@ -71,7 +71,7 @@ export const mainPageSlice = createSlice({
           (state.cards as IVideoItem[]) = action.payload.items;
           (state.nextPage as string | undefined) = action.payload.nextPageToken;
           (state.prevPage as string | undefined) = action.payload.prevPageToken;
-          if (state.pagesCount < 1) {
+          if (state.pagesCount < 1 || state.isSearchApplied) {
             state.pagesCount = Math.ceil(
               action.payload.pageInfo.totalResults / action.payload.pageInfo.resultsPerPage
             );

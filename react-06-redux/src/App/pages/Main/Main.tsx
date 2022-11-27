@@ -98,7 +98,7 @@ export function Main() {
           selected={state.sortingType}
           onChange={handleSortingChange}
           options={['date', 'rating', 'relevance', 'title', 'videoCount', 'viewCount']}
-          disabled={!!state.error}
+          disabled={!!state.error || !!(state.pagesCount < 1)}
         >
           Sorting:
         </Dropdown>
@@ -106,7 +106,7 @@ export function Main() {
           selected={state.cardsPerPage}
           onChange={handleCardsPerpageChange}
           options={['1', '2', '3', '4', '5']}
-          disabled={!!state.error}
+          disabled={!!state.error || !!(state.pagesCount < 1)}
         >
           Cards per page:
         </Dropdown>

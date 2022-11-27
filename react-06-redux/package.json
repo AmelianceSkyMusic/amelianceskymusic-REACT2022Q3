@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
     "react-hook-form": "^7.38.0",
+    "react-redux": "^8.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

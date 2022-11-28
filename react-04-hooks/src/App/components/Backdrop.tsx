@@ -1,5 +1,5 @@
+import './Backdrop.scss';
 import React from 'react';
-import './Backdrop.css';
 
 interface IBackdropProps {
   onClick?: () => void;

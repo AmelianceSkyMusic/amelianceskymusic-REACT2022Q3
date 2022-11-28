@@ -20,5 +20,6 @@ export interface IFormCard {
 
 export interface IFormPageState {
   form: IFormInputs;
+  initForm: IFormInputs;
   cards: IFormCard[];
 }

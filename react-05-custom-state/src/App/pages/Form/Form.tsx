@@ -28,13 +28,6 @@ export function Form() {
     mode: 'onSubmit',
     defaultValues: {
       ...state?.form,
-      firstName: state?.form.firstName,
-      birthday: state?.form.birthday,
-      framework: state?.form.framework,
-      good: state?.form.good,
-      showSex: state?.form.showSex,
-      sex: state?.form.sex,
-      avatar: undefined,
     },
   });
 
@@ -56,6 +49,7 @@ export function Form() {
   const showSexWatch = watch('showSex');
 
   const handleReset = () => {
+    state?.resetForm();
     reset();
   };
 

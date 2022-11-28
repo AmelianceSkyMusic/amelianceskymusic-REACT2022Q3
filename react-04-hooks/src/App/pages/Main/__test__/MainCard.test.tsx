@@ -16,7 +16,7 @@ describe('Card component', () => {
     render(
       <>
         {cardsMock.map((card: IVideoItem) => (
-          <MainCard key={card.id} {...card} />
+          <MainCard key={card.id.videoId} {...card} />
         ))}
       </>
     );

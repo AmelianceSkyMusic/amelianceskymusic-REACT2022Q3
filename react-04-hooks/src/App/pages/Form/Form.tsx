@@ -131,6 +131,7 @@ export function Form() {
               type="submit"
               disabled={!isDirty || !isValidFixed}
               value="Create Card"
+              data-testid="create-card"
             />
           </div>
         </form>

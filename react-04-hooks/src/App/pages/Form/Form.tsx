@@ -47,17 +47,17 @@ export function Form() {
   const isValidFixed = asm.isObjectEmpty(errors); //* fix isValid default has false
 
   const firstName = register('firstName', {
-    required: 'Field is so empty! Please, type more characters',
-    minLength: { value: 2, message: 'Min length are 2 characters' },
+    required: 'Field is so empty! Please, type more characters!',
+    minLength: { value: 2, message: 'Min length are 2 characters!' },
     pattern: { value: /^[A-Za-z]+$/i, message: 'Please, use only A-Z a-z characters!' },
   });
 
-  const birthday = register('birthday', { required: 'Please, select a date' });
-  const framework = register('framework', { required: 'Please, chose a course' });
-  const good = register('good', { required: 'Please, check checkbox' });
-  const showSex = register('showSex', { required: 'Please, chose a sex' });
-  const sex = register('sex', { required: 'Please, chose a sex' });
-  const avatar = register('avatar', { required: 'Please, select an image' });
+  const birthday = register('birthday', { required: 'Please, select a date!' });
+  const framework = register('framework', { required: 'Please, chose a course!' });
+  const good = register('good', { required: 'Please, check checkbox!' });
+  const showSex = register('showSex', { required: 'Please, chose a sex!' });
+  const sex = register('sex', { required: 'Please, chose a sex!' });
+  const avatar = register('avatar', { required: 'Please, select an image!' });
 
   const showSexWatch = watch('showSex');
 

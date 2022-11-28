@@ -131,7 +131,7 @@ export function Form() {
             Select your avatar:*
           </FileImgUpload>
           <div className="form__buttons">
-            <button className="button secondary" onClick={handleReset} disabled={!isDirty}>
+            <button type="button" className="button secondary" onClick={handleReset}>
               Reset
             </button>
             <input
